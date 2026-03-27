@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name=legionio",
     "astro": "astro"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.2.2",
-    "tailwindcss": "4.2.2"
+    "tailwindcss": "4.2.2",
+    "wrangler": "4.77.0"
   }
 }
