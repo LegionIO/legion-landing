@@ -1,0 +1,393 @@
+<div class="hero-neural-field" aria-hidden="true">
+  <canvas class="hero-neural-canvas" data-neural-canvas></canvas>
+  <div class="hero-neural-vignette"></div>
+</div>
+
+<script>
+  const canvases = document.querySelectorAll("[data-neural-canvas]");
+
+  canvases.forEach((canvas) => {
+    if (!(canvas instanceof HTMLCanvasElement)) return;
+
+    const root = canvas.closest("[data-neural-root]");
+    if (!(root instanceof HTMLElement)) return;
+
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let animationFrame = 0;
+    let disposed = false;
+    let scrollFade = 1;
+    let lastTime = performance.now();
+    let nextNodeId = 0;
+
+    const palette = {
+      node: "127, 119, 221",
+      nodeBright: "197, 194, 245",
+      branch: "160, 154, 232",
+      pulse: "233, 229, 255",
+      haze: "88, 78, 156",
+    };
+
+    const pointer = {
+      x: 0,
+      y: 0,
+      active: false,
+      ripple: 0,
+    };
+
+    /** @type {Array<{
+      id: number;
+      x: number;
+      y: number;
+      radius: number;
+      baseRadius: number;
+      glow: number;
+      driftX: number;
+      driftY: number;
+      phase: number;
+      pulseOffset: number;
+      opacity: number;
+    }>} */
+    const nodes = [];
+
+    /** @type {Array<{
+      from: number;
+      to: number;
+      width: number;
+      opacity: number;
+      pulse: number;
+      pulseSpeed: number;
+      pulseSize: number;
+    }>} */
+    const edges = [];
+
+    const interactiveSelector = "a, button, input, textarea, select, summary, [role='button']";
+
+    const rand = (min, max) => Math.random() * (max - min) + min;
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    const createNode = (x, y, options = {}) => {
+      const node = {
+        id: nextNodeId++,
+        x,
+        y,
+        radius: options.radius ?? rand(4.5, 8.5),
+        baseRadius: options.baseRadius ?? options.radius ?? rand(4.5, 8.5),
+        glow: options.glow ?? rand(22, 50),
+        driftX: options.driftX ?? rand(-0.18, 0.18),
+        driftY: options.driftY ?? rand(-0.14, 0.14),
+        phase: options.phase ?? rand(0, Math.PI * 2),
+        pulseOffset: options.pulseOffset ?? rand(0, Math.PI * 2),
+        opacity: options.opacity ?? rand(0.45, 0.92),
+      };
+
+      nodes.push(node);
+      return node;
+    };
+
+    const connectNodes = (from, to, options = {}) => {
+      edges.push({
+        from: from.id,
+        to: to.id,
+        width: options.width ?? rand(1, 2),
+        opacity: options.opacity ?? rand(0.18, 0.4),
+        pulse: options.pulse ?? Math.random(),
+        pulseSpeed: options.pulseSpeed ?? rand(0.12, 0.32),
+        pulseSize: options.pulseSize ?? rand(0.05, 0.12),
+      });
+    };
+
+    const getNode = (id) => nodes.find((node) => node.id === id);
+
+    const seedNetwork = () => {
+      nodes.length = 0;
+      edges.length = 0;
+
+      const core = createNode(width * 0.48, height * 0.56, {
+        radius: 12,
+        baseRadius: 12,
+        glow: 86,
+        opacity: 0.95,
+      });
+
+      const count = width < 700 ? 6 : 10;
+      for (let index = 0; index < count; index += 1) {
+        const angle = (Math.PI * 2 * index) / count + rand(-0.2, 0.2);
+        const distance = rand(width * 0.1, width * 0.24);
+        const x = clamp(core.x + Math.cos(angle) * distance + rand(-width * 0.12, width * 0.12), 30, width - 30);
+        const y = clamp(core.y + Math.sin(angle) * rand(height * 0.12, height * 0.24), 24, height - 24);
+        const node = createNode(x, y, {
+          radius: rand(5.5, 10),
+          glow: rand(32, 64),
+          opacity: rand(0.42, 0.88),
+        });
+        connectNodes(core, node, {
+          width: rand(1.2, 2.2),
+          opacity: rand(0.16, 0.3),
+          pulseSize: rand(0.08, 0.16),
+        });
+      }
+
+      const extraCount = width < 700 ? 4 : 6;
+      for (let index = 0; index < extraCount; index += 1) {
+        const from = nodes[Math.floor(rand(1, nodes.length))];
+        const angle = rand(-Math.PI, Math.PI);
+        const distance = rand(width * 0.08, width * 0.16);
+        const x = clamp(from.x + Math.cos(angle) * distance, 24, width - 24);
+        const y = clamp(from.y + Math.sin(angle) * distance, 24, height - 24);
+        const node = createNode(x, y, {
+          radius: rand(4, 7),
+          glow: rand(18, 36),
+          opacity: rand(0.28, 0.6),
+        });
+        connectNodes(from, node, {
+          width: rand(0.8, 1.6),
+          opacity: rand(0.1, 0.2),
+        });
+      }
+    };
+
+    const resize = () => {
+      width = Math.max(1, window.innerWidth);
+      height = Math.max(1, window.innerHeight);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      seedNetwork();
+      draw(lastTime);
+    };
+
+    const spawnBranch = (originX, originY) => {
+      const root = createNode(originX, originY, {
+        radius: rand(7, 11),
+        baseRadius: rand(7, 11),
+        glow: rand(54, 84),
+        opacity: 0.94,
+      });
+
+      const branches = width < 700 ? 2 : Math.round(rand(2, 4));
+      const angleOffset = rand(0, Math.PI * 2);
+
+      for (let index = 0; index < branches; index += 1) {
+        const angle = angleOffset + (Math.PI * 2 * index) / branches + rand(-0.32, 0.32);
+        const distance = rand(width * 0.08, width * 0.16);
+        const child = createNode(
+          clamp(originX + Math.cos(angle) * distance, 20, width - 20),
+          clamp(originY + Math.sin(angle) * distance, 20, height - 20),
+          {
+            radius: rand(4.2, 7.4),
+            glow: rand(20, 42),
+            opacity: rand(0.5, 0.8),
+          }
+        );
+
+        connectNodes(root, child, {
+          width: rand(1.1, 2.4),
+          opacity: rand(0.24, 0.42),
+          pulse: 0,
+          pulseSpeed: rand(0.28, 0.54),
+          pulseSize: rand(0.12, 0.2),
+        });
+
+        if (Math.random() > 0.45) {
+          const leafAngle = angle + rand(-0.5, 0.5);
+          const leafDistance = rand(width * 0.045, width * 0.09);
+          const leaf = createNode(
+            clamp(child.x + Math.cos(leafAngle) * leafDistance, 18, width - 18),
+            clamp(child.y + Math.sin(leafAngle) * leafDistance, 18, height - 18),
+            {
+              radius: rand(3, 5.4),
+              glow: rand(16, 24),
+              opacity: rand(0.24, 0.52),
+            }
+          );
+
+          connectNodes(child, leaf, {
+            width: rand(0.8, 1.3),
+            opacity: rand(0.14, 0.24),
+            pulse: Math.random(),
+            pulseSpeed: rand(0.18, 0.4),
+            pulseSize: rand(0.08, 0.14),
+          });
+        }
+      }
+
+      const maxNodes = width < 700 ? 24 : 32;
+      const maxEdges = width < 700 ? 30 : 42;
+
+      if (nodes.length > maxNodes) {
+        nodes.splice(0, nodes.length - maxNodes);
+      }
+
+      if (edges.length > maxEdges) {
+        edges.splice(0, edges.length - maxEdges);
+      }
+    };
+
+    const drawEdge = (edge, now) => {
+      const from = getNode(edge.from);
+      const to = getNode(edge.to);
+      if (!from || !to) return;
+
+      const midX = (from.x + to.x) / 2 + (to.y - from.y) * 0.03;
+      const midY = (from.y + to.y) / 2 - (to.x - from.x) * 0.03;
+      const alpha = edge.opacity * scrollFade;
+
+      context.strokeStyle = `rgba(${palette.branch}, ${alpha})`;
+      context.lineWidth = edge.width;
+      context.beginPath();
+      context.moveTo(from.x, from.y);
+      context.quadraticCurveTo(midX, midY, to.x, to.y);
+      context.stroke();
+
+      const pulseProgress = (edge.pulse + now * edge.pulseSpeed) % 1;
+      const px = from.x + (to.x - from.x) * pulseProgress;
+      const py = from.y + (to.y - from.y) * pulseProgress;
+      const pulseRadius = Math.max(1.5, edge.width * 1.4 + edge.pulseSize * 14);
+
+      const pulseGradient = context.createRadialGradient(px, py, 0, px, py, pulseRadius * 3.5);
+      pulseGradient.addColorStop(0, `rgba(${palette.pulse}, ${0.6 * scrollFade})`);
+      pulseGradient.addColorStop(1, `rgba(${palette.pulse}, 0)`);
+
+      context.fillStyle = pulseGradient;
+      context.beginPath();
+      context.arc(px, py, pulseRadius * 3.5, 0, Math.PI * 2);
+      context.fill();
+    };
+
+    const drawNode = (node, now) => {
+      const pulse = 1 + Math.sin(now * 1.35 + node.pulseOffset) * 0.08;
+      const radius = node.radius * pulse;
+      const glow = node.glow * (0.85 + Math.sin(now + node.phase) * 0.1);
+      const alpha = node.opacity * scrollFade;
+
+      const glowGradient = context.createRadialGradient(node.x, node.y, 0, node.x, node.y, glow);
+      glowGradient.addColorStop(0, `rgba(${palette.node}, ${0.22 * alpha})`);
+      glowGradient.addColorStop(0.45, `rgba(${palette.haze}, ${0.1 * alpha})`);
+      glowGradient.addColorStop(1, `rgba(${palette.haze}, 0)`);
+
+      context.fillStyle = glowGradient;
+      context.beginPath();
+      context.arc(node.x, node.y, glow, 0, Math.PI * 2);
+      context.fill();
+
+      context.fillStyle = `rgba(${palette.nodeBright}, ${0.96 * alpha})`;
+      context.beginPath();
+      context.arc(node.x, node.y, radius, 0, Math.PI * 2);
+      context.fill();
+
+      context.fillStyle = `rgba(${palette.node}, ${0.75 * alpha})`;
+      context.beginPath();
+      context.arc(node.x, node.y, Math.max(1.5, radius * 0.62), 0, Math.PI * 2);
+      context.fill();
+    };
+
+    const drawPointer = () => {
+      if (!pointer.active || reducedMotion.matches) return;
+
+      const radius = 70 + Math.sin(pointer.ripple) * 8;
+      const gradient = context.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, radius);
+      gradient.addColorStop(0, `rgba(${palette.node}, ${0.08 * scrollFade})`);
+      gradient.addColorStop(1, `rgba(${palette.node}, 0)`);
+      context.fillStyle = gradient;
+      context.beginPath();
+      context.arc(pointer.x, pointer.y, radius, 0, Math.PI * 2);
+      context.fill();
+    };
+
+    const draw = (time) => {
+      const now = time / 1000;
+      context.clearRect(0, 0, width, height);
+
+      const background = context.createRadialGradient(width * 0.48, height * 0.2, 0, width * 0.48, height * 0.2, width * 0.62);
+      background.addColorStop(0, `rgba(${palette.haze}, ${0.09 * scrollFade})`);
+      background.addColorStop(1, "rgba(14, 12, 26, 0)");
+      context.fillStyle = background;
+      context.fillRect(0, 0, width, height);
+
+      edges.forEach((edge) => drawEdge(edge, now));
+      nodes.forEach((node) => drawNode(node, now));
+      drawPointer();
+    };
+
+    const tick = (time) => {
+      if (disposed) return;
+
+      const delta = Math.min((time - lastTime) / 1000, 0.033);
+      lastTime = time;
+
+      if (!reducedMotion.matches) {
+        nodes.forEach((node, index) => {
+          const driftScale = index === 0 ? 0.25 : 1;
+          node.x = clamp(node.x + node.driftX * driftScale * delta * 24, 16, width - 16);
+          node.y = clamp(node.y + node.driftY * driftScale * delta * 24, 16, height - 16);
+          node.phase += delta * 0.7;
+
+          if (node.x <= 18 || node.x >= width - 18) node.driftX *= -1;
+          if (node.y <= 18 || node.y >= height - 18) node.driftY *= -1;
+        });
+
+        pointer.ripple += delta * 2.4;
+      }
+
+      draw(time);
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+
+    const onPointerMove = (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.active = true;
+    };
+
+    const onPointerLeave = () => {
+      pointer.active = false;
+    };
+
+    const onClick = (event) => {
+      if (reducedMotion.matches) return;
+      if (event.target instanceof Element && event.target.closest(interactiveSelector)) return;
+
+      if (event.clientX < 0 || event.clientY < 0 || event.clientX > width || event.clientY > height) return;
+      spawnBranch(event.clientX, event.clientY);
+    };
+
+    const onReducedMotionChange = () => {
+      if (reducedMotion.matches) {
+        pointer.active = false;
+      }
+    };
+
+    resize();
+    animationFrame = window.requestAnimationFrame(tick);
+
+    window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    root.addEventListener("pointerleave", onPointerLeave);
+    root.addEventListener("click", onClick);
+    reducedMotion.addEventListener("change", onReducedMotionChange);
+
+    const cleanup = () => {
+      disposed = true;
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointerMove);
+      root.removeEventListener("pointerleave", onPointerLeave);
+      root.removeEventListener("click", onClick);
+      reducedMotion.removeEventListener("change", onReducedMotionChange);
+    };
+
+    window.addEventListener("pagehide", cleanup, { once: true });
+  });
+</script>

@@ -131,6 +131,52 @@
   }
 }
 
+.landing-main {
+  isolation: isolate;
+}
+
+.landing-main > :not(.hero-neural-field) {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-section {
+  isolation: isolate;
+}
+
+.hero-neural-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-neural-canvas {
+  width: 100%;
+  height: 100vh;
+  display: block;
+  opacity: 0.95;
+}
+
+.hero-neural-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(197, 194, 245, 0.08), transparent 30%),
+    radial-gradient(circle at 50% 70%, rgba(14, 12, 26, 0), rgba(14, 12, 26, 0.45) 72%),
+    linear-gradient(180deg, rgba(14, 12, 26, 0.28) 0%, rgba(14, 12, 26, 0.1) 30%, rgba(14, 12, 26, 0.5) 100%);
+  pointer-events: none;
+}
+
+.hero-content-scrim {
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(14, 12, 26, 0.08), rgba(14, 12, 26, 0.28) 44%, rgba(14, 12, 26, 0.56) 100%),
+    linear-gradient(180deg, rgba(14, 12, 26, 0.1) 0%, rgba(14, 12, 26, 0.2) 30%, rgba(14, 12, 26, 0.34) 100%);
+}
+
 /* Scroll reveal */
 [data-reveal] {
   opacity: 0;
@@ -166,6 +212,10 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .hero-neural-canvas {
+    opacity: 0.45;
+  }
+
   [data-reveal],
   [data-reveal-stagger] > * {
     opacity: 1;
