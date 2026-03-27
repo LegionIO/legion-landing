@@ -144,6 +144,13 @@
   isolation: isolate;
 }
 
+.hero-visuals {
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.85) 82%, rgba(0, 0, 0, 0.35) 92%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.85) 82%, rgba(0, 0, 0, 0.35) 92%, transparent 100%);
+}
+
 .hero-neural-field {
   position: fixed;
   inset: 0;
