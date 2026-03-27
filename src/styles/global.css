@@ -184,6 +184,21 @@
     linear-gradient(180deg, rgba(14, 12, 26, 0.1) 0%, rgba(14, 12, 26, 0.2) 30%, rgba(14, 12, 26, 0.34) 100%);
 }
 
+.footer-shell {
+  position: relative;
+}
+
+.footer-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(14, 12, 26, 0.78) 0%, rgba(14, 12, 26, 0.88) 32%, rgba(14, 12, 26, 0.96) 100%),
+    radial-gradient(circle at 22% 18%, rgba(127, 119, 221, 0.12) 0%, transparent 34%),
+    radial-gradient(circle at 78% 28%, rgba(197, 194, 245, 0.08) 0%, transparent 30%);
+}
+
 .nav-link {
   position: relative;
   padding-bottom: 0.35rem;

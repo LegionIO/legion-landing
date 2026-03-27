@@ -36,13 +36,14 @@ const columns = [
 ];
 ---
 
-<footer class="border-t border-white/5 pt-16 pb-8">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="footer-shell border-t border-white/8 pt-16 pb-8">
+  <div class="footer-backdrop"></div>
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Columns -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
       {columns.map((col) => (
         <div>
-          <h4 class="text-sm font-heading font-semibold text-surface-300 mb-4">{col.title}</h4>
+          <h4 class="text-sm font-heading font-semibold text-surface-200 mb-4">{col.title}</h4>
           <ul class="space-y-2">
             {col.links.map((link) => (
               <li>
@@ -50,7 +51,7 @@ const columns = [
                   href={link.href}
                   target={link.href.startsWith("http") ? "_blank" : undefined}
                   rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  class="text-sm text-surface-500 hover:text-lavender transition-colors duration-200"
+                  class="text-sm text-surface-300 hover:text-lavender transition-colors duration-200"
                 >
                   {link.label}
                 </a>
@@ -62,15 +63,15 @@ const columns = [
     </div>
 
     <!-- Bottom -->
-    <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="border-t border-white/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <span class="text-sm font-heading font-bold tracking-[0.18em] uppercase text-gradient-violet">
-          Legion
+        <span class="text-sm font-heading font-bold tracking-[0.18em] uppercase">
+          <span class="text-medium-lavender">LEGION</span><span class="text-surface-100">IO</span>
         </span>
-        <span class="text-xs text-surface-600">|</span>
-        <span class="text-xs text-surface-500">Cognitive architecture for AI agents</span>
+        <span class="text-xs text-surface-500">|</span>
+        <span class="text-xs text-surface-300">Cognitive architecture for AI agents</span>
       </div>
-      <span class="text-xs text-surface-600">
+      <span class="text-xs text-surface-400">
         &copy; {new Date().getFullYear()} LegionIO Contributors. Open source under Apache 2.0.
       </span>
     </div>
