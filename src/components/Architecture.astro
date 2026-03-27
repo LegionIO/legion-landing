@@ -1,0 +1,104 @@
+---
+import SectionHeading from "./ui/SectionHeading.astro";
+import GlowCard from "./ui/GlowCard.astro";
+
+const components = [
+  {
+    name: "GAIA",
+    role: "Cognitive Coordinator",
+    description: "Orchestrates the 13-phase tick cycle, routes messages between cognitive modules, and manages channel abstraction across interfaces.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
+  },
+  {
+    name: "Synapse",
+    role: "Cognitive Router",
+    description: "Three-layer routing — bones for task execution, nerves for confidence-scored routing, mind for dream replay and deep processing.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
+  },
+  {
+    name: "Apollo",
+    role: "Knowledge Store",
+    description: "Shared PostgreSQL-backed knowledge with semantic retrieval, confidence decay, and cross-agent knowledge sharing.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
+  },
+];
+
+const tickPhases = [
+  "Perceive", "Attend", "Remember", "Predict", "Evaluate",
+  "Decide", "Plan", "Act", "Monitor", "Learn",
+  "Reflect", "Consolidate", "Rest",
+];
+
+const dreamPhases = [
+  "Replay", "Compress", "Associate", "Integrate", "Prune", "Strengthen", "Emerge",
+];
+---
+
+<section id="architecture" class="py-20 md:py-32">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeading
+      label="Architecture"
+      title="How It Thinks"
+      subtitle="A biologically-inspired cognitive loop — not a request-response chain."
+    />
+
+    <!-- Core Components -->
+    <div class="grid md:grid-cols-3 gap-6 mb-16" data-reveal-stagger>
+      {components.map((comp) => (
+        <GlowCard>
+          <div class="text-violet-primary mb-4" set:html={comp.icon} />
+          <h3 class="text-lg font-heading font-bold text-surface-100 mb-1">{comp.name}</h3>
+          <span class="text-xs font-mono text-violet-primary/80 uppercase tracking-wider">{comp.role}</span>
+          <p class="text-sm text-surface-400 mt-3 leading-relaxed">{comp.description}</p>
+        </GlowCard>
+      ))}
+    </div>
+
+    <!-- Tick Cycle -->
+    <div class="mb-12" data-reveal>
+      <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
+        13-Phase Waking Tick Cycle
+      </h3>
+      <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
+        {tickPhases.map((phase, i) => (
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-primary/8 border border-violet-primary/15 text-sm text-surface-200 font-medium">
+              <span class="text-xs text-violet-primary/60 font-mono">{i + 1}</span>
+              {phase}
+            </span>
+            {i < tickPhases.length - 1 && (
+              <svg class="w-3 h-3 text-surface-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Dream Cycle -->
+    <div data-reveal>
+      <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
+        7-Phase Dream Cycle
+      </h3>
+      <div class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
+        {dreamPhases.map((phase, i) => (
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-deep-purple/20 border border-deep-purple/25 text-sm text-surface-300 font-medium">
+              <span class="text-xs text-medium-lavender/60 font-mono">{i + 1}</span>
+              {phase}
+            </span>
+            {i < dreamPhases.length - 1 && (
+              <svg class="w-3 h-3 text-surface-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            )}
+          </div>
+        ))}
+      </div>
+      <p class="text-center text-sm text-surface-500 mt-4">
+        Memory consolidation during idle — agents dream to strengthen important patterns and prune noise.
+      </p>
+    </div>
+  </div>
+</section>

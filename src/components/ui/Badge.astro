@@ -1,0 +1,24 @@
+---
+interface Props {
+  pulse?: boolean;
+  class?: string;
+}
+
+const { pulse = true, class: className = "" } = Astro.props;
+---
+
+<span
+  class:list={[
+    "inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium",
+    "bg-violet-primary/10 text-lavender border border-violet-primary/20",
+    className,
+  ]}
+>
+  {pulse && (
+    <span class="relative flex h-2 w-2">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-primary opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-violet-primary"></span>
+    </span>
+  )}
+  <slot />
+</span>

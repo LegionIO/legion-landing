@@ -1,0 +1,26 @@
+---
+interface Props {
+  label?: string;
+  title: string;
+  subtitle?: string;
+  class?: string;
+}
+
+const { label, title, subtitle, class: className = "" } = Astro.props;
+---
+
+<div class:list={["text-center max-w-3xl mx-auto mb-16", className]} data-reveal>
+  {label && (
+    <span class="inline-block text-xs font-mono font-semibold tracking-widest uppercase text-violet-primary mb-4">
+      {label}
+    </span>
+  )}
+  <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-surface-100 mb-4">
+    {title}
+  </h2>
+  {subtitle && (
+    <p class="text-lg text-surface-400 leading-relaxed">
+      {subtitle}
+    </p>
+  )}
+</div>

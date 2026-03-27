@@ -1,0 +1,78 @@
+---
+const columns = [
+  {
+    title: "Project",
+    links: [
+      { label: "GitHub", href: "https://github.com/LegionIO" },
+      { label: "Documentation", href: "https://legionio.dev" },
+      { label: "Extensions", href: "https://github.com/orgs/LegionIO/repositories" },
+      { label: "RubyGems", href: "https://rubygems.org/gems/legionio" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Getting Started", href: "#get-started" },
+      { label: "Architecture", href: "#architecture" },
+      { label: "MCP Server", href: "https://github.com/LegionIO/legion-mcp" },
+      { label: "API Reference", href: "https://legionio.dev" },
+    ],
+  },
+  {
+    title: "Community",
+    links: [
+      { label: "Discussions", href: "https://github.com/orgs/LegionIO/discussions" },
+      { label: "Issues", href: "https://github.com/LegionIO/LegionIO/issues" },
+      { label: "Contributing", href: "https://github.com/LegionIO/LegionIO/blob/main/CONTRIBUTING.md" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Apache 2.0 License", href: "https://github.com/LegionIO/LegionIO/blob/main/LICENSE" },
+      { label: "MIT (Extensions)", href: "https://opensource.org/licenses/MIT" },
+    ],
+  },
+];
+---
+
+<footer class="border-t border-white/5 pt-16 pb-8">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Columns -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      {columns.map((col) => (
+        <div>
+          <h4 class="text-sm font-heading font-semibold text-surface-300 mb-4">{col.title}</h4>
+          <ul class="space-y-2">
+            {col.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="text-sm text-surface-500 hover:text-lavender transition-colors duration-200"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom -->
+    <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-sm font-heading font-bold tracking-[0.18em] uppercase text-gradient-violet">
+          Legion
+        </span>
+        <span class="text-xs text-surface-600">|</span>
+        <span class="text-xs text-surface-500">Cognitive architecture for AI agents</span>
+      </div>
+      <span class="text-xs text-surface-600">
+        &copy; {new Date().getFullYear()} LegionIO Contributors. Open source under Apache 2.0.
+      </span>
+    </div>
+  </div>
+</footer>

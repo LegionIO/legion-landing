@@ -1,0 +1,73 @@
+---
+import SectionHeading from "./ui/SectionHeading.astro";
+
+const rows = [
+  {
+    them: "Static system prompts",
+    us: "13-phase cognitive tick cycle",
+  },
+  {
+    them: "No persistent memory",
+    us: "Dream cycle consolidates knowledge",
+  },
+  {
+    them: "Single agent, single turn",
+    us: "Multi-agent orchestration via GAIA",
+  },
+  {
+    them: "Hardcoded tool lists",
+    us: "58 MCP tools with dynamic discovery",
+  },
+  {
+    them: "No self-awareness",
+    us: "Metacognition, reflection, identity",
+  },
+  {
+    them: "Bolted-on RAG",
+    us: "Apollo semantic knowledge store",
+  },
+];
+---
+
+<section id="comparison" class="py-20 md:py-32">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeading
+      label="Why Cognitive Architecture"
+      title="Not a Prompt Wrapper"
+      subtitle="Most agent frameworks wrap an LLM in a loop. LegionIO models cognition — perception, reasoning, memory, emotion, and action — as distinct, composable systems."
+    />
+
+    <div class="rounded-2xl overflow-hidden glass-card glow-border" data-reveal>
+      <!-- Header -->
+      <div class="grid grid-cols-2 border-b border-white/5">
+        <div class="px-6 py-4 text-sm font-mono font-semibold text-surface-500 uppercase tracking-wider">
+          Prompt Wrappers
+        </div>
+        <div class="px-6 py-4 text-sm font-mono font-semibold text-violet-primary uppercase tracking-wider border-l border-white/5">
+          LegionIO
+        </div>
+      </div>
+
+      <!-- Rows -->
+      {rows.map((row, i) => (
+        <div class:list={[
+          "grid grid-cols-2",
+          i < rows.length - 1 && "border-b border-white/5",
+        ]}>
+          <div class="px-6 py-4 text-surface-500 text-sm md:text-base flex items-center">
+            <svg class="w-4 h-4 mr-3 text-surface-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+            </svg>
+            {row.them}
+          </div>
+          <div class="px-6 py-4 text-surface-200 text-sm md:text-base border-l border-white/5 flex items-center">
+            <svg class="w-4 h-4 mr-3 text-violet-primary shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            {row.us}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
