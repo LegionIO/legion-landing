@@ -6,9 +6,10 @@ interface Props {
 }
 
 const { code, title, class: className = "" } = Astro.props;
+const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
 ---
 
-<div class:list={["rounded-xl overflow-hidden glass-card", className]}>
+<div class:list={["rounded-xl overflow-hidden glass-card", className]} style={glassCardStyle}>
   {title && (
     <div class="flex items-center gap-2 px-4 py-2.5 border-b border-white/5">
       <div class="flex gap-1.5">

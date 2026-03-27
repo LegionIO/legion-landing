@@ -8,11 +8,14 @@ const links = [
   { label: "Community", href: "#community" },
   { label: "Open Source", href: "#open-source" },
 ];
+
+const glassNavStyle = "backdrop-filter: blur(20px) saturate(120%); -webkit-backdrop-filter: blur(20px) saturate(120%);";
 ---
 
 <nav
   id="nav"
   class="fixed top-0 left-0 right-0 z-50 border-b border-transparent transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300"
+  style={glassNavStyle}
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
@@ -89,7 +92,7 @@ const links = [
   </div>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/5">
+  <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/5" style={glassNavStyle}>
     <div class="px-4 py-4 space-y-3">
       {links.map((link) => (
         <a

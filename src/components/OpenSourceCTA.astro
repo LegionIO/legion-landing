@@ -1,5 +1,7 @@
 ---
 import Button from "./ui/Button.astro";
+
+const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
 ---
 
 <section id="open-source" class="py-20 md:py-32 relative overflow-hidden">
@@ -36,7 +38,7 @@ import Button from "./ui/Button.astro";
     </div>
 
     <!-- Install reminder -->
-    <div class="inline-flex items-center gap-3 px-5 py-3 rounded-xl glass-card">
+    <div class="inline-flex items-center gap-3 px-5 py-3 rounded-xl glass-card" style={glassCardStyle}>
       <span class="text-violet-primary font-mono text-sm">$</span>
       <code class="font-mono text-sm text-surface-200">gem install legionio</code>
     </div>

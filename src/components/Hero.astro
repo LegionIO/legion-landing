@@ -8,6 +8,8 @@ const stats = [
   { value: "58", label: "MCP Tools" },
   { value: "23K+", label: "Specs" },
 ];
+
+const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
 ---
 
 <section class="hero-section relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
@@ -37,7 +39,7 @@ const stats = [
     </p>
 
     <!-- Install command -->
-    <div class="inline-flex items-center gap-3 px-5 py-3 rounded-xl glass-card mb-8 animate-fade-up" style="animation-delay: 200ms">
+    <div class="inline-flex items-center gap-3 px-5 py-3 rounded-xl glass-card mb-8 animate-fade-up" style={`animation-delay: 200ms; ${glassCardStyle}`}>
       <span class="text-violet-primary font-mono text-sm">$</span>
       <code class="font-mono text-sm text-surface-200">gem install legionio</code>
       <button

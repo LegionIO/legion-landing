@@ -27,6 +27,8 @@ const rows = [
     us: "Apollo semantic knowledge store",
   },
 ];
+
+const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
 ---
 
 <section id="comparison" class="py-20 md:py-32">
@@ -37,7 +39,7 @@ const rows = [
       subtitle="Most agent frameworks wrap an LLM in a loop. LegionIO models cognition — perception, reasoning, memory, emotion, and action — as distinct, composable systems."
     />
 
-    <div class="rounded-2xl overflow-hidden glass-card glow-border" data-reveal>
+    <div class="rounded-2xl overflow-hidden glass-card glow-border" data-reveal style={glassCardStyle}>
       <!-- Header -->
       <div class="grid grid-cols-2 border-b border-white/5">
         <div class="px-6 py-4 text-sm font-mono font-semibold text-surface-500 uppercase tracking-wider">
