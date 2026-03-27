@@ -1,31 +1,53 @@
 ---
 const links = [
-  { label: "Features", href: "#features" },
   { label: "Architecture", href: "#architecture" },
-  { label: "Extensions", href: "#extensions" },
+  { label: "Features", href: "#features" },
+  { label: "Compare", href: "#comparison" },
+  { label: "Ecosystem", href: "#extensions" },
   { label: "Get Started", href: "#get-started" },
+  { label: "Community", href: "#community" },
+  { label: "Open Source", href: "#open-source" },
 ];
 ---
 
 <nav
   id="nav"
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  class="fixed top-0 left-0 right-0 z-50 border-b border-transparent transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2 group">
-        <span class="text-lg font-heading font-bold tracking-[0.18em] uppercase text-gradient-violet">
-          Legion
+      <a href="/" class="flex items-center gap-3 group">
+        <span class="flex h-10 w-10 items-center justify-center text-medium-lavender transition-colors duration-200 group-hover:text-lavender">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5.5" y="5.5" width="13" height="13" rx="3.5"/>
+            <rect x="9" y="9" width="6" height="6" rx="1.5"/>
+            <path d="M8 2.5v3"/>
+            <path d="M12 1.5v4"/>
+            <path d="M16 2.5v3"/>
+            <path d="M8 18.5v3"/>
+            <path d="M12 18.5v4"/>
+            <path d="M16 18.5v3"/>
+            <path d="M2.5 8h3"/>
+            <path d="M1.5 12h4"/>
+            <path d="M2.5 16h3"/>
+            <path d="M18.5 8h3"/>
+            <path d="M18.5 12h4"/>
+            <path d="M18.5 16h3"/>
+          </svg>
+        </span>
+        <span class="text-lg font-heading font-bold tracking-[0.18em] uppercase">
+          <span class="text-medium-lavender transition-colors duration-200 group-hover:text-lavender">LEGION</span><span class="text-surface-100 transition-colors duration-200 group-hover:text-surface-200">IO</span>
         </span>
       </a>
 
       <!-- Desktop links -->
-      <div class="hidden md:flex items-center gap-8">
+      <div class="hidden md:flex items-center gap-6 lg:gap-8">
         {links.map((link) => (
           <a
             href={link.href}
-            class="text-sm text-surface-400 hover:text-lavender transition-colors duration-200 font-medium"
+            class="nav-link text-sm text-surface-400 hover:text-surface-100 transition-colors duration-200 font-medium"
+            data-nav-link
           >
             {link.label}
           </a>
@@ -72,7 +94,8 @@ const links = [
       {links.map((link) => (
         <a
           href={link.href}
-          class="block text-sm text-surface-400 hover:text-lavender transition-colors py-2 font-medium"
+          class="nav-link-mobile block text-sm text-surface-400 hover:text-surface-100 transition-colors py-2 font-medium"
+          data-nav-link
         >
           {link.label}
         </a>
@@ -95,15 +118,57 @@ const links = [
 <script>
   // Nav scroll effect
   const nav = document.getElementById("nav");
+  const navLinks = Array.from(document.querySelectorAll("[data-nav-link]"));
+  const trackedSections = Array.from(document.querySelectorAll("section[id]")).filter((section) =>
+    navLinks.some((link) => link.getAttribute("href") === `#${section.id}`)
+  );
+
+  const setActiveLink = (id) => {
+    navLinks.forEach((link) => {
+      const isActive = link.getAttribute("href") === `#${id}`;
+      link.classList.toggle("is-active", isActive);
+      if (isActive) {
+        link.setAttribute("aria-current", "true");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  const updateActiveSection = () => {
+    if (!trackedSections.length) return;
+
+    const navHeight = nav?.getBoundingClientRect().height ?? 0;
+    const targetY = navHeight + 120;
+    let activeId = trackedSections[0]?.id;
+
+    trackedSections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= targetY && rect.bottom >= targetY - 80) {
+        activeId = section.id;
+      }
+    });
+
+    if (window.scrollY < 32) {
+      activeId = "";
+    }
+
+    setActiveLink(activeId);
+  };
+
   const onScroll = () => {
     if (!nav) return;
     if (window.scrollY > 50) {
-      nav.classList.add("glass", "border-b", "border-white/5", "shadow-lg", "shadow-black/10");
+      nav.classList.add("glass", "border-white/5", "shadow-lg", "shadow-black/10");
     } else {
-      nav.classList.remove("glass", "border-b", "border-white/5", "shadow-lg", "shadow-black/10");
+      nav.classList.remove("glass", "border-white/5", "shadow-lg", "shadow-black/10");
     }
+
+    updateActiveSection();
   };
+
   window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", updateActiveSection);
   onScroll();
 
   // Mobile menu toggle
@@ -127,4 +192,6 @@ const links = [
       closeIcon?.classList.add("hidden");
     });
   });
+
+  updateActiveSection();
 </script>
