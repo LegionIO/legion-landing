@@ -1,43 +1,66 @@
-# Astro Starter Kit: Minimal
+# LegionIO Landing Page
 
-```sh
-npm create astro@latest -- --template minimal
+Marketing and landing page for [LegionIO](https://github.com/LegionIO) — an open source cognitive architecture for AI agents.
+
+Built with [Astro](https://astro.build/) + [Tailwind CSS 4](https://tailwindcss.com/), deployed to [Cloudflare Pages](https://pages.cloudflare.com/).
+
+## Development
+
+```bash
+npm install
+npm run dev          # start dev server at localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Build
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run build        # static output to ./dist/
+npm run preview      # preview production build locally
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deploy (Cloudflare Pages)
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Setting | Value |
+|---------|-------|
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Environment variable | `NODE_VERSION=22` |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Project Structure
 
-## 🧞 Commands
+```
+src/
+├── layouts/BaseLayout.astro        # HTML shell, meta, fonts, scroll-reveal script
+├── pages/index.astro               # Single page composing all sections
+├── styles/global.css               # Tailwind theme, colors, animations, utilities
+├── components/
+│   ├── Nav.astro                   # Sticky glass nav + mobile menu
+│   ├── Hero.astro                  # Headline, install command, CTAs, stats
+│   ├── Comparison.astro            # "Not a Prompt Wrapper" table
+│   ├── Architecture.astro          # GAIA / Synapse / Apollo + tick & dream cycles
+│   ├── FeatureGrid.astro           # 8 feature cards
+│   ├── Extensions.astro            # Cognitive domains + service integrations
+│   ├── GettingStarted.astro        # 3-step terminal install guide
+│   ├── Audience.astro              # Who it's for
+│   ├── OpenSourceCTA.astro         # Final call to action
+│   └── Footer.astro                # Links + copyright
+└── components/ui/
+    ├── Badge.astro                 # Pill badge with optional pulse dot
+    ├── Button.astro                # Primary/secondary link buttons
+    ├── CodeBlock.astro             # Terminal-style block with copy button
+    ├── SectionHeading.astro        # Label + title + subtitle
+    └── GlowCard.astro             # Glass card with glow border
+```
 
-All commands are run from the root of the project, from a terminal:
+## Theme
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Color palette derived from [legion-interlink](https://github.com/LegionIO/legion-interlink)'s design system:
 
-## 👀 Want to learn more?
+- **Violet Primary** `#7F77DD` — accent, links, glows
+- **Lavender** `#C5C2F5` — highlighted text, gradients
+- **Deep Purple** `#584E9C` — shadows, dark accents
+- **Background** `#0e0c1a` — deep purple-black
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## License
+
+MIT
