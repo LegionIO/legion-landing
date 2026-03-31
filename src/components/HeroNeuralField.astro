@@ -44,6 +44,8 @@
       id: number;
       x: number;
       y: number;
+      targetX: number;
+      targetY: number;
       radius: number;
       baseRadius: number;
       glow: number;
@@ -52,6 +54,7 @@
       phase: number;
       pulseOffset: number;
       opacity: number;
+      growProgress: number;
     }>} */
     const nodes = [];
 
@@ -63,6 +66,8 @@
       pulse: number;
       pulseSpeed: number;
       pulseSize: number;
+      growProgress: number;
+      growDelay: number;
     }>} */
     const edges = [];
 
@@ -70,10 +75,15 @@
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
     const createNode = (x, y, options = {}) => {
+      const originX = options.originX ?? x;
+      const originY = options.originY ?? y;
+      const growing = options.growProgress !== undefined && options.growProgress < 1;
       const node = {
         id: nextNodeId++,
-        x,
-        y,
+        x: growing ? originX : x,
+        y: growing ? originY : y,
+        targetX: x,
+        targetY: y,
         radius: options.radius ?? rand(4.5, 8.5),
         baseRadius: options.baseRadius ?? options.radius ?? rand(4.5, 8.5),
         glow: options.glow ?? rand(22, 50),
@@ -82,6 +92,7 @@
         phase: options.phase ?? rand(0, Math.PI * 2),
         pulseOffset: options.pulseOffset ?? rand(0, Math.PI * 2),
         opacity: options.opacity ?? rand(0.45, 0.92),
+        growProgress: options.growProgress ?? 1,
       };
 
       nodes.push(node);
@@ -97,6 +108,8 @@
         pulse: options.pulse ?? Math.random(),
         pulseSpeed: options.pulseSpeed ?? rand(0.12, 0.32),
         pulseSize: options.pulseSize ?? rand(0.05, 0.12),
+        growProgress: options.growProgress ?? 1,
+        growDelay: options.growDelay ?? 0,
       });
     };
 
@@ -193,6 +206,7 @@
         baseRadius: rand(7, 11),
         glow: rand(54, 84),
         opacity: 0.94,
+        growProgress: 0,
       });
 
       if (anchor) {
@@ -202,6 +216,8 @@
           pulse: 0,
           pulseSpeed: rand(0.24, 0.46),
           pulseSize: rand(0.12, 0.18),
+          growProgress: 0,
+          growDelay: 0,
         });
       }
 
@@ -211,13 +227,16 @@
       for (let index = 0; index < branches; index += 1) {
         const angle = angleOffset + (Math.PI * 2 * index) / branches + rand(-0.32, 0.32);
         const distance = rand(width * 0.08, width * 0.16);
-        const child = createNode(
-          clamp(originX + Math.cos(angle) * distance, 20, width - 20),
-          clamp(originY + Math.sin(angle) * distance, 20, height - 20),
-          {
+        const targetX = clamp(originX + Math.cos(angle) * distance, 20, width - 20);
+        const targetY = clamp(originY + Math.sin(angle) * distance, 20, height - 20);
+        const branchDelay = rand(0.05, 0.2);
+        const child = createNode(targetX, targetY, {
+            originX,
+            originY,
             radius: rand(4.2, 7.4),
             glow: rand(20, 42),
             opacity: rand(0.5, 0.8),
+            growProgress: 0,
           }
         );
 
@@ -227,18 +246,22 @@
           pulse: 0,
           pulseSpeed: rand(0.28, 0.54),
           pulseSize: rand(0.12, 0.2),
+          growProgress: 0,
+          growDelay: branchDelay,
         });
 
         if (Math.random() > 0.45) {
           const leafAngle = angle + rand(-0.5, 0.5);
           const leafDistance = rand(width * 0.045, width * 0.09);
-          const leaf = createNode(
-            clamp(child.x + Math.cos(leafAngle) * leafDistance, 18, width - 18),
-            clamp(child.y + Math.sin(leafAngle) * leafDistance, 18, height - 18),
-            {
+          const leafTargetX = clamp(targetX + Math.cos(leafAngle) * leafDistance, 18, width - 18);
+          const leafTargetY = clamp(targetY + Math.sin(leafAngle) * leafDistance, 18, height - 18);
+          const leaf = createNode(leafTargetX, leafTargetY, {
+              originX,
+              originY,
               radius: rand(3, 5.4),
               glow: rand(16, 24),
               opacity: rand(0.24, 0.52),
+              growProgress: 0,
             }
           );
 
@@ -248,6 +271,8 @@
             pulse: Math.random(),
             pulseSpeed: rand(0.18, 0.4),
             pulseSize: rand(0.08, 0.14),
+            growProgress: 0,
+            growDelay: branchDelay + rand(0.3, 0.5),
           });
         }
       }
@@ -258,16 +283,26 @@
       const to = getNode(edge.to);
       if (!from || !to) return;
 
-      const midX = (from.x + to.x) / 2 + (to.y - from.y) * 0.03;
-      const midY = (from.y + to.y) / 2 - (to.x - from.x) * 0.03;
-      const alpha = edge.opacity * scrollFade;
+      const g = edge.growProgress;
+      if (g <= 0) return;
+
+      // Interpolate endpoint based on grow progress
+      const eased = 1 - Math.pow(1 - g, 2);
+      const toX = from.x + (to.x - from.x) * eased;
+      const toY = from.y + (to.y - from.y) * eased;
+
+      const midX = (from.x + toX) / 2 + (toY - from.y) * 0.03;
+      const midY = (from.y + toY) / 2 - (toX - from.x) * 0.03;
+      const alpha = edge.opacity * scrollFade * eased;
 
       context.strokeStyle = `rgba(${palette.branch}, ${alpha})`;
       context.lineWidth = edge.width;
       context.beginPath();
       context.moveTo(from.x, from.y);
-      context.quadraticCurveTo(midX, midY, to.x, to.y);
+      context.quadraticCurveTo(midX, midY, toX, toY);
       context.stroke();
+
+      if (g < 1) return; // no pulse until fully grown
 
       const pulseProgress = (edge.pulse + now * edge.pulseSpeed * 0.6) % 1;
       const px = from.x + (to.x - from.x) * pulseProgress;
@@ -285,10 +320,13 @@
     };
 
     const drawNode = (node, now) => {
+      const g = node.growProgress;
+      if (g <= 0) return;
+      const growScale = 1 - Math.pow(1 - g, 3); // ease-out cubic
       const pulse = 1 + Math.sin(now * 0.8 + node.pulseOffset) * 0.08;
-      const radius = node.radius * pulse;
-      const glow = node.glow * (0.85 + Math.sin(now * 0.6 + node.phase) * 0.1);
-      const alpha = node.opacity * scrollFade;
+      const radius = node.radius * pulse * growScale;
+      const glow = node.glow * (0.85 + Math.sin(now * 0.6 + node.phase) * 0.1) * growScale;
+      const alpha = node.opacity * scrollFade * growScale;
 
       const glowGradient = context.createRadialGradient(node.x, node.y, 0, node.x, node.y, glow);
       glowGradient.addColorStop(0, `rgba(${palette.node}, ${0.14 * alpha})`);
@@ -346,7 +384,31 @@
       lastTime = time;
 
       if (!reducedMotion.matches) {
+        // Advance grow progress on edges (with delay) and nodes
+        const growSpeed = 1.2;
+        edges.forEach((edge) => {
+          if (edge.growProgress < 1) {
+            if (edge.growDelay > 0) {
+              edge.growDelay = Math.max(0, edge.growDelay - delta);
+            } else {
+              edge.growProgress = Math.min(1, edge.growProgress + delta * growSpeed);
+            }
+          }
+        });
+        nodes.forEach((node) => {
+          if (node.growProgress < 1) {
+            node.growProgress = Math.min(1, node.growProgress + delta * growSpeed);
+            // Ease-out lerp toward target
+            const t = 1 - Math.pow(1 - node.growProgress, 3);
+            node.targetX += node.driftX * delta * 14;
+            node.targetY += node.driftY * delta * 14;
+            node.x = node.x + (node.targetX - node.x) * t;
+            node.y = node.y + (node.targetY - node.y) * t;
+          }
+        });
+
         nodes.forEach((node, index) => {
+          if (node.growProgress < 1) return; // still growing, skip normal drift
           const driftScale = index === 0 ? 0.25 : 1;
           node.x = clamp(node.x + node.driftX * driftScale * delta * 14, 16, width - 16);
           node.y = clamp(node.y + node.driftY * driftScale * delta * 14, 16, height - 16);

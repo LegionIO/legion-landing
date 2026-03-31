@@ -35,7 +35,7 @@
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: none;
     }
   }
 
@@ -106,6 +106,7 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(127, 119, 221, 0.1);
   }
+
 
   .glow-border {
     box-shadow:
@@ -249,7 +250,7 @@
 
 [data-reveal].revealed {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* Staggered children */
@@ -261,7 +262,7 @@
 
 [data-reveal-stagger].revealed > * {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 [data-reveal-stagger].revealed > *:nth-child(1) { transition-delay: 0ms; }
