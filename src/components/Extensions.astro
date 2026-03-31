@@ -2,10 +2,8 @@
 import SectionHeading from "./ui/SectionHeading.astro";
 
 const cognitiveDomains = [
-  "Executive", "Memory", "Affect", "Inference", "Social",
-  "Self", "Learning", "Imagination", "Language", "Integration",
-  "Attention", "Defense", "Homeostasis", "Perception",
-  "Motor", "Spatial", "Temporal", "Meta",
+  "Executive", "Attention", "Memory", "Affect", "Inference", "Social",
+  "Self", "Learning", "Language", "Imagination", "Homeostasis", "Defense", "Integration",
 ];
 
 const integrations = [
@@ -21,7 +19,7 @@ const integrations = [
   { name: "Grafana", icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.657 7.46a.81.81 0 0 0-.761-.648c-.267 0-.467.2-.534.467-.367 1.6-1.534 2.333-3.034 2.333-.133 0-.267 0-.4-.033-.867-.1-1.534-.467-2.134-.9.367-.567.667-1.167.9-1.834a6.547 6.547 0 0 0 .434-2.833c-.067-.567-.234-.934-.567-.934-.467 0-.867.667-1.067 1.134a7.02 7.02 0 0 0-.567 2.333c-.433.334-.9.601-1.4.834a6.22 6.22 0 0 0-.633-2.234c-.334-.567-.734-1.133-1.234-1.133-.333 0-.533.3-.6.633a6.427 6.427 0 0 0 .4 3.434c-.5.1-1.034.133-1.534.1a6.267 6.267 0 0 0-1.4-2.934c-.4-.433-.834-.733-1.267-.733-.334 0-.534.3-.534.633a6.963 6.963 0 0 0 1.234 3.434c-.534.267-1.1.467-1.7.567a6.027 6.027 0 0 0-.467-1.234c-.333-.567-.733-1.1-1.233-1.1-.334 0-.534.267-.6.6a4.52 4.52 0 0 0 .7 2.467c-.467.067-.934.1-1.4.067a3.3 3.3 0 0 1-1.534-.5c-.1-.067-.233-.1-.333-.1a.516.516 0 0 0-.5.534c0 .267.2.467.433.567.767.367 1.534.534 2.367.534.367 0 .767-.034 1.134-.1a6.38 6.38 0 0 0 3.833 3.3c.334.1.667.167 1.034.2a5.767 5.767 0 0 0 5.1-2.967 6.2 6.2 0 0 0 .767-2.267c.9.367 1.834.534 2.834.534 1.867 0 3.5-.867 4-2.734.033-.133.033-.233.033-.367 0-.267-.067-.467-.2-.633z"/></svg>` },
   { name: "Discord", icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>` },
   { name: "Telegram", icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>` },
-  { name: "Jenkins", icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.6064 9.6006c.1272.0005.2704.0518.4218.169.526.408.12 1.413-.535 1.326-.4882-.065-.4752-.4-.3032-.7.0756-.132.2233-.2987.375-.4118l.012-.006c.0102-.004.0192-.0052.0294-.0052zM12 0C5.3726 0 0 5.3726 0 12c0 6.6274 5.3726 12 12 12 6.6274 0 12-5.3726 12-12C24 5.3726 18.6274 0 12 0z"/></svg>` },
+  { name: "Jenkins", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>` },
   { name: "GitLab", icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.405.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4399l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4412.8748.8748 0 0 0-.9997-.0539.8585.8585 0 0 0-.3362.405L.4332 9.5015l-.0325.0862a6.0657 6.0657 0 0 0 2.0119 6.9909l.0112.0087.0312.0225 4.9547 3.7116 2.4516 1.854 1.4933 1.1277a1.0085 1.0085 0 0 0 1.2197 0l1.4933-1.1277 2.4516-1.854 4.9885-3.7353.0125-.01a6.0682 6.0682 0 0 0 2.0094-6.9897z"/></svg>` },
   { name: "Jira", icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.215 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1.001-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24.013 12.487V1.005A1.005 1.005 0 0 0 23.013 0z"/></svg>` },
   { name: "PagerDuty", icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.965 1.18C15.085.164 13.769 0 10.683 0H3.73v14.55h6.926c2.743 0 4.8-.164 6.61-1.37 1.975-1.303 3.004-3.47 3.004-6.007 0-2.716-1.262-4.896-3.305-5.993zM11.348 11.08H7.584V3.492h3.36c3.545 0 5.34 1.37 5.34 3.702 0 2.58-1.795 3.887-4.936 3.887zM3.73 17.754h3.854V24H3.73z"/></svg>` },
@@ -42,14 +40,14 @@ const integrations = [
     <!-- Cognitive Domains -->
     <div class="mb-16" data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-2">
-        18 Cognitive Domains
+        13 Cognitive Domains
       </h3>
       <p class="text-center text-sm text-surface-500 mb-8">
-        242 brain-modeled extensions organized by cognitive function
+        234 cognitive modules organized by cognitive function
       </p>
       <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
         {cognitiveDomains.map((domain) => (
-          <span class="px-3 py-1.5 rounded-full text-sm font-medium bg-violet-primary/8 text-surface-300 border border-violet-primary/12 hover:border-violet-primary/30 hover:text-lavender transition-colors duration-200">
+          <span class="px-3 py-1.5 rounded-full text-sm font-medium text-surface-300 glass-card glow-border hover:border-violet-primary/25 hover:bg-white/[0.06] hover:text-lavender transition-all duration-300" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
             {domain}
           </span>
         ))}
@@ -59,16 +57,16 @@ const integrations = [
     <!-- Service Integrations -->
     <div data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-2">
-        80+ Service Integrations
+        50+ Service Integrations
       </h3>
       <p class="text-center text-sm text-surface-500 mb-8">
         Connect to your entire infrastructure
       </p>
       <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-4 max-w-4xl mx-auto">
         {integrations.map((item) => (
-          <div class="group flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-white/[0.03] transition-colors duration-200">
+          <div class="group flex flex-col items-center gap-2 p-3 rounded-xl glass-card glow-border hover:border-violet-primary/25 hover:bg-white/[0.06] transition-all duration-300" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
             <div class="w-8 h-8 text-surface-500 group-hover:text-lavender transition-colors duration-200" set:html={item.icon} />
-            <span class="text-xs text-surface-500 group-hover:text-surface-300 transition-colors duration-200 text-center">{item.name}</span>
+            <span class="text-xs text-surface-500 group-hover:text-surface-300 transition-colors duration-200 text-center whitespace-nowrap">{item.name}</span>
           </div>
         ))}
       </div>

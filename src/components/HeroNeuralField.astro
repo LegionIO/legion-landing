@@ -66,8 +66,6 @@
     }>} */
     const edges = [];
 
-    const interactiveSelector = "a, button, input, textarea, select, summary, [role='button']";
-
     const rand = (min, max) => Math.random() * (max - min) + min;
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -128,7 +126,7 @@
       nodes.length = 0;
       edges.length = 0;
 
-      const core = createNode(width * 0.48, height * 0.56, {
+      const core = createNode(width * 0.5, height * 0.5, {
         radius: 12,
         baseRadius: 12,
         glow: 86,
@@ -271,13 +269,13 @@
       context.quadraticCurveTo(midX, midY, to.x, to.y);
       context.stroke();
 
-      const pulseProgress = (edge.pulse + now * edge.pulseSpeed) % 1;
+      const pulseProgress = (edge.pulse + now * edge.pulseSpeed * 0.6) % 1;
       const px = from.x + (to.x - from.x) * pulseProgress;
       const py = from.y + (to.y - from.y) * pulseProgress;
       const pulseRadius = Math.max(1.5, edge.width * 1.4 + edge.pulseSize * 14);
 
       const pulseGradient = context.createRadialGradient(px, py, 0, px, py, pulseRadius * 3.5);
-      pulseGradient.addColorStop(0, `rgba(${palette.pulse}, ${0.6 * scrollFade})`);
+      pulseGradient.addColorStop(0, `rgba(${palette.pulse}, ${0.35 * scrollFade})`);
       pulseGradient.addColorStop(1, `rgba(${palette.pulse}, 0)`);
 
       context.fillStyle = pulseGradient;
@@ -287,14 +285,14 @@
     };
 
     const drawNode = (node, now) => {
-      const pulse = 1 + Math.sin(now * 1.35 + node.pulseOffset) * 0.08;
+      const pulse = 1 + Math.sin(now * 0.8 + node.pulseOffset) * 0.08;
       const radius = node.radius * pulse;
-      const glow = node.glow * (0.85 + Math.sin(now + node.phase) * 0.1);
+      const glow = node.glow * (0.85 + Math.sin(now * 0.6 + node.phase) * 0.1);
       const alpha = node.opacity * scrollFade;
 
       const glowGradient = context.createRadialGradient(node.x, node.y, 0, node.x, node.y, glow);
-      glowGradient.addColorStop(0, `rgba(${palette.node}, ${0.22 * alpha})`);
-      glowGradient.addColorStop(0.45, `rgba(${palette.haze}, ${0.1 * alpha})`);
+      glowGradient.addColorStop(0, `rgba(${palette.node}, ${0.14 * alpha})`);
+      glowGradient.addColorStop(0.45, `rgba(${palette.haze}, ${0.06 * alpha})`);
       glowGradient.addColorStop(1, `rgba(${palette.haze}, 0)`);
 
       context.fillStyle = glowGradient;
@@ -302,12 +300,12 @@
       context.arc(node.x, node.y, glow, 0, Math.PI * 2);
       context.fill();
 
-      context.fillStyle = `rgba(${palette.nodeBright}, ${0.96 * alpha})`;
+      context.fillStyle = `rgba(${palette.nodeBright}, ${0.6 * alpha})`;
       context.beginPath();
       context.arc(node.x, node.y, radius, 0, Math.PI * 2);
       context.fill();
 
-      context.fillStyle = `rgba(${palette.node}, ${0.75 * alpha})`;
+      context.fillStyle = `rgba(${palette.node}, ${0.5 * alpha})`;
       context.beginPath();
       context.arc(node.x, node.y, Math.max(1.5, radius * 0.62), 0, Math.PI * 2);
       context.fill();
@@ -330,7 +328,7 @@
       const now = time / 1000;
       context.clearRect(0, 0, width, height);
 
-      const background = context.createRadialGradient(width * 0.48, height * 0.2, 0, width * 0.48, height * 0.2, width * 0.62);
+      const background = context.createRadialGradient(width * 0.5, height * 0.2, 0, width * 0.5, height * 0.2, width * 0.62);
       background.addColorStop(0, `rgba(${palette.haze}, ${0.09 * scrollFade})`);
       background.addColorStop(1, "rgba(14, 12, 26, 0)");
       context.fillStyle = background;
@@ -350,9 +348,9 @@
       if (!reducedMotion.matches) {
         nodes.forEach((node, index) => {
           const driftScale = index === 0 ? 0.25 : 1;
-          node.x = clamp(node.x + node.driftX * driftScale * delta * 24, 16, width - 16);
-          node.y = clamp(node.y + node.driftY * driftScale * delta * 24, 16, height - 16);
-          node.phase += delta * 0.7;
+          node.x = clamp(node.x + node.driftX * driftScale * delta * 14, 16, width - 16);
+          node.y = clamp(node.y + node.driftY * driftScale * delta * 14, 16, height - 16);
+          node.phase += delta * 0.4;
 
           if (node.x <= 18 || node.x >= width - 18) node.driftX *= -1;
           if (node.y <= 18 || node.y >= height - 18) node.driftY *= -1;
@@ -375,9 +373,15 @@
       pointer.active = false;
     };
 
+    const foregroundSelector = "a, button, input, textarea, select, summary, [role='button'], h1, h2, h3, h4, h5, h6, p, span, code, img, svg, li, label, [data-reveal], [data-reveal-stagger], .glass-card";
+
     const onClick = (event) => {
       if (reducedMotion.matches) return;
-      if (event.target instanceof Element && event.target.closest(interactiveSelector)) return;
+      if (!(event.target instanceof Element)) return;
+
+      // Only spawn neurons when clicking empty background space —
+      // skip if the click landed on any foreground content
+      if (event.target.closest(foregroundSelector)) return;
 
       if (event.clientX < 0 || event.clientY < 0 || event.clientX > width || event.clientY > height) return;
       spawnBranch(event.clientX, event.clientY);

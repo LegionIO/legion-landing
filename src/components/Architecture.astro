@@ -6,31 +6,39 @@ const components = [
   {
     name: "GAIA",
     role: "Cognitive Coordinator",
-    description: "Orchestrates the 13-phase tick cycle, routes messages between cognitive modules, and manages channel abstraction across interfaces.",
+    description: "Orchestrates the 24-phase cognitive cycle (16 tick + 8 dream), routes messages between cognitive modules, and manages channel abstraction across interfaces.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
   },
   {
     name: "Synapse",
     role: "Cognitive Router",
-    description: "Three-layer routing — bones for task execution, nerves for confidence-scored routing, mind for dream replay and deep processing.",
+    description: "Three-layer routing — bones for task execution, nerves for confidence-scored routing with autonomy levels, mind for dream replay and knowledge promotion.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
   },
   {
     name: "Apollo",
     role: "Knowledge Store",
-    description: "Shared PostgreSQL-backed knowledge with semantic retrieval, confidence decay, and cross-agent knowledge sharing.",
+    description: "Two-tier shared knowledge store — local SQLite+FTS5 and global PostgreSQL+pgvector with semantic retrieval, confidence decay, and cross-agent knowledge sharing.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
+  },
+  {
+    name: "LLM Pipeline",
+    role: "Governance Engine",
+    description: "19-step pipeline for every LLM call — RBAC, PII/PHI classification, RAG context, budget guards, tool dispatch, confidence scoring, and full audit trail.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8Z"/></svg>`,
   },
 ];
 
 const tickPhases = [
-  "Perceive", "Attend", "Remember", "Predict", "Evaluate",
-  "Decide", "Plan", "Act", "Monitor", "Learn",
-  "Reflect", "Consolidate", "Rest",
+  "Sensory Processing", "Emotional Evaluation", "Memory Retrieval", "Knowledge Retrieval",
+  "Identity Entropy Check", "Working Memory Integration", "Procedural Check", "Prediction Engine",
+  "Mesh Interface", "Social Cognition", "Theory of Mind", "Gut Instinct",
+  "Action Selection", "Memory Consolidation", "Homeostasis Regulation", "Post-Tick Reflection",
 ];
 
 const dreamPhases = [
-  "Replay", "Compress", "Associate", "Integrate", "Prune", "Strengthen", "Emerge",
+  "Memory Audit", "Association Walk", "Contradiction Resolution", "Agenda Formation",
+  "Consolidation Commit", "Knowledge Promotion", "Dream Reflection", "Dream Narration",
 ];
 ---
 
@@ -43,7 +51,7 @@ const dreamPhases = [
     />
 
     <!-- Core Components -->
-    <div class="grid md:grid-cols-3 gap-6 mb-16" data-reveal-stagger>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16" data-reveal-stagger>
       {components.map((comp) => (
         <GlowCard>
           <div class="text-violet-primary mb-4" set:html={comp.icon} />
@@ -57,12 +65,12 @@ const dreamPhases = [
     <!-- Tick Cycle -->
     <div class="mb-12" data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
-        13-Phase Waking Tick Cycle
+        16-Phase Waking Tick Cycle
       </h3>
       <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
         {tickPhases.map((phase, i) => (
           <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-primary/8 border border-violet-primary/15 text-sm text-surface-200 font-medium">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-surface-200 font-medium glass-card glow-border hover:border-violet-primary/25 hover:bg-white/[0.06] transition-all duration-300" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
               <span class="text-xs text-violet-primary/60 font-mono">{i + 1}</span>
               {phase}
             </span>
@@ -79,12 +87,12 @@ const dreamPhases = [
     <!-- Dream Cycle -->
     <div data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
-        7-Phase Dream Cycle
+        8-Phase Dream Cycle
       </h3>
       <div class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
         {dreamPhases.map((phase, i) => (
           <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-deep-purple/20 border border-deep-purple/25 text-sm text-surface-300 font-medium">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-surface-300 font-medium glass-card glow-border hover:border-violet-primary/25 hover:bg-white/[0.06] transition-all duration-300" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
               <span class="text-xs text-medium-lavender/60 font-mono">{i + 1}</span>
               {phase}
             </span>
@@ -97,7 +105,7 @@ const dreamPhases = [
         ))}
       </div>
       <p class="text-center text-sm text-surface-500 mt-4">
-        Memory consolidation during idle — agents dream to strengthen important patterns and prune noise.
+        Memory consolidation during idle — agents dream to resolve contradictions, promote knowledge, and form new agendas.
       </p>
     </div>
   </div>

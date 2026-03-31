@@ -8,7 +8,7 @@ import CodeBlock from "./ui/CodeBlock.astro";
     <SectionHeading
       label="Get Started"
       title="Get Started"
-      subtitle="Zero infrastructure required to get started. Add RabbitMQ, Redis, and PostgreSQL when you're ready to scale."
+      subtitle="Ruby >= 3.4 and RabbitMQ to get started. Add Redis and PostgreSQL when you're ready to scale."
     />
 
     <div class="space-y-6" data-reveal-stagger>
@@ -32,7 +32,7 @@ import CodeBlock from "./ui/CodeBlock.astro";
         </div>
         <CodeBlock
           title="terminal"
-          code={`<span class="text-violet-primary">$</span> <span class="text-surface-200">legionio config scaffold</span>   <span class="text-surface-600"># auto-detects your environment</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legionio check</span>             <span class="text-surface-600"># verify connections</span>`}
+          code={`<span class="text-violet-primary">$</span> <span class="text-surface-200">legionio config scaffold</span>   <span class="text-surface-500"># auto-detects your environment</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legionio check</span>             <span class="text-surface-500"># verify connections</span>`}
         />
       </div>
 
@@ -44,7 +44,7 @@ import CodeBlock from "./ui/CodeBlock.astro";
         </div>
         <CodeBlock
           title="terminal"
-          code={`<span class="text-violet-primary">$</span> <span class="text-surface-200">legion</span>                     <span class="text-surface-600"># interactive TTY shell</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legion chat</span>                <span class="text-surface-600"># AI-powered REPL</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legionio start</span>             <span class="text-surface-600"># start the daemon</span>`}
+          code={`<span class="text-violet-primary">$</span> <span class="text-surface-200">legion</span>                     <span class="text-surface-500"># interactive TTY shell</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legion chat</span>                <span class="text-surface-500"># AI-powered REPL</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legionio start</span>             <span class="text-surface-500"># start the daemon</span>`}
         />
       </div>
     </div>
@@ -57,7 +57,7 @@ import CodeBlock from "./ui/CodeBlock.astro";
           <path d="M12 16v-4"/>
           <path d="M12 8h.01"/>
         </svg>
-        Works in zero-infrastructure mode — no RabbitMQ or Redis required to get started.
+        Requires Ruby >= 3.4 and RabbitMQ. Optional: PostgreSQL, Redis, HashiCorp Vault.
       </p>
     </div>
   </div>
