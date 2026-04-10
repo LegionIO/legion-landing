@@ -184,9 +184,15 @@
     };
 
     const resize = () => {
-      width = Math.max(1, window.innerWidth);
-      height = Math.max(1, window.innerHeight);
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const newWidth = Math.max(1, window.innerWidth);
+      const newHeight = Math.max(1, window.innerHeight);
+      const newDpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      const widthChanged = newWidth !== width || newDpr !== dpr;
+
+      width = newWidth;
+      height = newHeight;
+      dpr = newDpr;
 
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
@@ -195,7 +201,7 @@
 
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      seedNetwork();
+      if (widthChanged) seedNetwork();
       draw(lastTime);
     };
 
