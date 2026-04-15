@@ -136,7 +136,7 @@
   isolation: isolate;
 }
 
-.landing-main > :not(.hero-neural-field) {
+.landing-main > :not(.hero-hex-grid) {
   position: relative;
   z-index: 1;
 }
@@ -152,7 +152,7 @@
   mask-image: linear-gradient(180deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.85) 82%, rgba(0, 0, 0, 0.35) 92%, transparent 100%);
 }
 
-.hero-neural-field {
+.hero-hex-grid {
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -160,14 +160,14 @@
   pointer-events: none;
 }
 
-.hero-neural-canvas {
+.hero-hex-canvas {
   width: 100%;
   height: 100vh;
   display: block;
   opacity: 0.95;
 }
 
-.hero-neural-vignette {
+.hero-hex-vignette {
   position: absolute;
   inset: 0;
   background:
@@ -276,7 +276,7 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .hero-neural-canvas {
+  .hero-hex-canvas {
     opacity: 0.45;
   }
 

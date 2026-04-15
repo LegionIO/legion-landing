@@ -6,19 +6,19 @@ const components = [
   {
     name: "GAIA",
     role: "Cognitive Coordinator",
-    description: "Orchestrates the 24-phase cognitive cycle (16 tick + 8 dream), routes messages between cognitive modules, and manages channel abstraction across interfaces.",
+    description: "Orchestrates the 20-phase cognitive cycle (13 tick + 7 dream), routes messages between cognitive modules, and manages channel abstraction across interfaces.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
   },
   {
     name: "Synapse",
     role: "Cognitive Router",
-    description: "Three-layer routing — bones for task execution, nerves for confidence-scored routing with autonomy levels, mind for dream replay and knowledge promotion.",
+    description: "Three-layer routing — lex-tasker for task execution, lex-synapse for confidence-scored routing, and GAIA/Apollo for knowledge management and dream replay.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
   },
   {
     name: "Apollo",
     role: "Knowledge Store",
-    description: "Two-tier shared knowledge store — local SQLite+FTS5 and global PostgreSQL+pgvector with semantic retrieval, confidence decay, and cross-agent knowledge sharing.",
+    description: "Shared knowledge store backed by PostgreSQL with pgvector — semantic retrieval, confidence decay, and cross-agent knowledge sharing via RabbitMQ.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
   },
   {
@@ -65,7 +65,7 @@ const dreamPhases = [
     <!-- Tick Cycle -->
     <div class="mb-12" data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
-        16-Phase Waking Tick Cycle
+        13-Phase Waking Tick Cycle
       </h3>
       <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
         {tickPhases.map((phase, i) => (
@@ -87,7 +87,7 @@ const dreamPhases = [
     <!-- Dream Cycle -->
     <div data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
-        8-Phase Dream Cycle
+        7-Phase Dream Cycle
       </h3>
       <div class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
         {dreamPhases.map((phase, i) => (

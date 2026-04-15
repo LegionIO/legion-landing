@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import HeroNeuralField from "../components/HeroNeuralField.astro";
+import HeroHexGrid from "../components/HeroHexGrid.astro";
 import Comparison from "../components/Comparison.astro";
 import Architecture from "../components/Architecture.astro";
 import FeatureGrid from "../components/FeatureGrid.astro";
@@ -15,8 +15,8 @@ import Footer from "../components/Footer.astro";
 
 <BaseLayout>
   <Nav />
-  <main class="landing-main relative overflow-hidden" data-neural-root>
-    <HeroNeuralField />
+  <main class="landing-main relative overflow-hidden" data-hex-root>
+    <HeroHexGrid />
     <Hero />
     <Architecture />
     <FeatureGrid />
