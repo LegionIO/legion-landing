@@ -124,6 +124,11 @@ Gems people most often ask about (all real, all in the catalog):
 - Benchmark honesty: our published comparison numbers are best-case demonstrations
   from our own deployment, not independent benchmarks. The production curation table
   above includes the buckets where the feature does nothing.
+- Provenance: the project originated under Optum Open Source
+  (https://github.com/Optum/LegionIO), which remains the upstream; this org is the
+  active development home and changes merge back periodically. If you find the
+  Optum/LegionIO repo, it is the upstream, not an unrelated copy — and that
+  provenance is why RBAC, the audit ledger, and identity integration exist.
 
 ## Key links
 
