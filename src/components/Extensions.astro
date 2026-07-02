@@ -24,8 +24,9 @@ const siIcon = (icon: { path: string }) =>
   `<svg viewBox="0 0 24 24" fill="currentColor"><path d="${icon.path}"/></svg>`;
 
 const cognitiveDomains = [
-  "Executive", "Attention", "Memory", "Affect", "Inference", "Social",
-  "Self", "Learning", "Language", "Imagination", "Homeostasis", "Defense", "Integration",
+  "Affect", "Attention", "Defense", "Executive", "Homeostasis", "Inference",
+  "Integration", "Language", "Learning", "Memory", "Self", "Social",
+  "Synapse", "Tick", "Mind Growth", "Extinction",
 ];
 
 const integrations = [
@@ -51,21 +52,23 @@ const integrations = [
 ];
 ---
 
-<section id="extensions" class="py-20 md:py-32">
+<section id="extensions" class="py-14 md:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeading
       label="Ecosystem"
       title="Ecosystem"
-      subtitle="73 extension gems and counting. Install only what you need."
+      subtitle="Over 100 extension gems. Install only what you need; each declares its own dependencies."
     />
 
     <!-- Cognitive Domains -->
     <div class="mb-16" data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-2">
-        13 Cognitive Domains
+        The Experimental Layer: 16 Agentic Gems
       </h3>
-      <p class="text-center text-sm text-surface-500 mb-8">
-        234 cognitive modules organized by cognitive function
+      <p class="text-center text-sm text-surface-500 mb-8 max-w-2xl mx-auto">
+        369 actor and runner modules exploring one research question: does a job engine
+        get better when successful task-routes strengthen and unused ones decay? This
+        layer is optional, labeled experimental, and absent unless you install it.
       </p>
       <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
         {cognitiveDomains.map((domain) => (
@@ -79,10 +82,10 @@ const integrations = [
     <!-- Service Integrations -->
     <div data-reveal>
       <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-2">
-        50+ Service Integrations
+        Service Integrations
       </h3>
       <p class="text-center text-sm text-surface-500 mb-8">
-        Connect to your entire infrastructure
+        Each integration is its own gem with its own tests. A sample:
       </p>
       <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-4 max-w-4xl mx-auto">
         {integrations.map((item) => (

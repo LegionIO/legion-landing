@@ -3,16 +3,16 @@ import Badge from "./ui/Badge.astro";
 import Button from "./ui/Button.astro";
 
 const stats = [
-  { value: "73", label: "Extension Gems" },
-  { value: "13", label: "Cognitive Domains" },
-  { value: "60", label: "MCP Tools" },
-  { value: "23K+", label: "Specs" },
+  { value: "97.7%", label: "Context reduction, 50+ turn sessions" },
+  { value: "5", label: "Routing tiers" },
+  { value: "9", label: "Provider adapters" },
+  { value: "51K+", label: "Spec examples" },
 ];
 
 const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
 ---
 
-<section class="hero-section relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+<section class="hero-section relative pt-28 pb-14 md:pt-36 md:pb-20 overflow-hidden">
   <!-- Background effects -->
   <div class="hero-visuals absolute inset-0 overflow-hidden">
     <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
@@ -23,19 +23,23 @@ const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: bl
   <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <!-- Badge -->
     <div class="mb-8 animate-fade-in">
-      <Badge>Open Source Cognitive Framework</Badge>
+      <Badge>Open Source · Apache-2.0 / MIT · No Feature Gates</Badge>
     </div>
 
     <!-- Headline -->
-    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-[1.1] mb-6 animate-fade-up">
-      <span class="text-gradient-violet">Cognitive Architecture</span>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-heading font-bold leading-[1.1] mb-6 animate-fade-up">
+      <span class="text-surface-100">Legion<span class="text-gradient-violet">IO</span></span>
       <br />
-      <span class="text-surface-100">for AI Agents</span>
+      <span class="text-surface-100">Every <span class="text-gradient-violet">I</span>nput. Any <span class="text-gradient-violet">O</span>utput.</span>
     </h1>
 
     <!-- Subtitle -->
     <p class="text-lg md:text-xl text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up" style="animation-delay: 100ms">
-      Not a prompt wrapper. A biologically-inspired neural processing system where agents think in 20-phase cognitive cycles, dream to consolidate memory, and grow new capabilities autonomously.
+      Everything in LegionIO is an input routed to an output. A schedule fires a Teams
+      message. A webhook chains tasks across a worker fleet. An LLM request finds the
+      most cost-effective model that can serve it. A mention of a meeting becomes a
+      tool call. All of it on a distributed Ruby job engine that runs with zero
+      infrastructure in lite mode.
     </p>
 
     <!-- Install commands -->

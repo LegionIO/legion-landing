@@ -1,0 +1,108 @@
+---
+import SectionHeading from "./ui/SectionHeading.astro";
+import catalog from "../data/extensions.json";
+
+const categoryOrder = [
+  "AI & LLM",
+  "Core & Services",
+  "Service Integrations",
+  "Code Workflow",
+  "Identity",
+  "Agentic (Experimental)",
+  "FinOps",
+  "Skills",
+];
+
+const byCategory = categoryOrder
+  .map((cat) => ({
+    category: cat,
+    gems: catalog.gems.filter((g) => g.category === cat),
+  }))
+  .filter((c) => c.gems.length > 0);
+---
+
+<section id="catalog" class="py-14 md:py-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeading
+      label="Capability Catalog"
+      title="Every Runner Is a Tool"
+      subtitle={`${catalog.gem_count} extension gems, ${catalog.runner_count} runners, ${catalog.function_count.toLocaleString()} functions — this list is generated from source, not written by hand.`}
+    />
+
+    <div class="max-w-3xl mx-auto mb-12 text-surface-400 text-sm md:text-base leading-relaxed space-y-3" data-reveal>
+      <p>
+        When traffic routes through LegionIO, exposed extension runner functions are
+        automatically available as tools. To your client (Claude Code, Codex, anything
+        MCP- or API-compatible) they appear as server-side tools; LegionIO executes them
+        directly and returns results on the wire — no round-trip through your client,
+        no tokens spent shuttling tool plumbing.
+      </p>
+      <p>
+        Discovery is contextual: runners declare trigger words, so mentioning a Teams
+        transcript or a Slack thread injects the relevant tool definitions into that
+        request. Ask about a meeting and the model finds <code class="text-violet-primary/90 font-mono text-sm">teams.list_chats</code>
+        exists exactly when it needs it. The mechanism is
+        <a href="https://github.com/LegionIO/legion-mcp/blob/main/lib/legion/mcp/function_discovery.rb" class="text-violet-primary hover:text-lavender underline underline-offset-2">function_discovery.rb</a>;
+        the full machine-readable catalog is in
+        <a href="https://github.com/LegionIO/docs/blob/main/capabilities.md" class="text-violet-primary hover:text-lavender underline underline-offset-2">capabilities.md</a>.
+      </p>
+    </div>
+
+    <div class="space-y-10" data-reveal>
+      {byCategory.map(({ category, gems }) => (
+        <div>
+          <h3 class="text-lg font-heading font-semibold text-surface-200 mb-4">
+            {category}
+            <span class="text-sm font-normal text-surface-500 ml-2">{gems.length} gems</span>
+          </h3>
+          <div class="space-y-2">
+            {gems.map((g) => (
+              <details class="group rounded-xl glass-card glow-border overflow-hidden" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+                <summary class="flex items-center justify-between gap-4 px-5 py-3.5 cursor-pointer select-none hover:bg-white/[0.04] transition-colors duration-200 list-none [&::-webkit-details-marker]:hidden">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <svg class="w-4 h-4 text-surface-600 shrink-0 transition-transform duration-200 group-open:rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                    <span class="font-mono text-sm text-surface-100">{g.gem}</span>
+                    <span class="hidden md:inline text-sm text-surface-500 truncate">{g.summary}</span>
+                  </div>
+                  {g.function_count > 0 && (
+                    <span class="shrink-0 text-xs font-mono text-surface-500">
+                      {g.runner_count} runners · {g.function_count} functions
+                    </span>
+                  )}
+                </summary>
+                <div class="px-5 pb-4 pt-1 border-t border-white/5">
+                  {g.summary && <p class="md:hidden text-sm text-surface-500 mb-3">{g.summary}</p>}
+                  <div class="space-y-3">
+                    {g.runners.map((r) => (
+                      <div>
+                        <div class="text-sm font-mono text-violet-primary/90 mb-1">
+                          {r.runner}
+                          {r.tool_prefixes.length > 0 && (
+                            <span class="text-surface-600 ml-2 text-xs">{r.tool_prefixes.slice(0, 3).join(" · ")}</span>
+                          )}
+                        </div>
+                        <ul class="text-sm text-surface-400 space-y-0.5 pl-4">
+                          {r.functions.map((f) => (
+                            <li>
+                              <code class="font-mono text-xs text-surface-300">{f.name}</code>
+                              {f.desc && <span class="text-surface-500"> — {f.desc}</span>}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="text-center text-sm text-surface-500 mt-10" data-reveal>
+      Regenerated from source on every release. If it's listed here, the code exists;
+      if the code exists, it's listed here.
+    </p>
+  </div>
+</section>

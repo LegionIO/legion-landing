@@ -1,51 +1,40 @@
 ---
 import SectionHeading from "./ui/SectionHeading.astro";
 
-const rows = [
-  {
-    them: "Static system prompts",
-    us: "20-phase cognitive cycle",
-  },
-  {
-    them: "No persistent memory",
-    us: "Dream cycle consolidates knowledge",
-  },
-  {
-    them: "Single agent, single turn",
-    us: "Multi-agent orchestration via GAIA",
-  },
-  {
-    them: "Hardcoded tool lists",
-    us: "60 MCP tools with dynamic discovery",
-  },
-  {
-    them: "No self-awareness",
-    us: "Metacognition, reflection, identity",
-  },
-  {
-    them: "Bolted-on RAG",
-    us: "Apollo semantic knowledge store",
-  },
-];
+const check = `<svg class="w-4 h-4 text-violet-primary shrink-0 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>`;
+const cross = `<svg class="w-4 h-4 text-surface-600 shrink-0 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>`;
 
-const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
+const rows = [
+  { capability: "Tiered routing with failover", gateway: true, compressor: false, legion: true },
+  { capability: "Automatic context curation", gateway: false, compressor: true, legion: true },
+  { capability: "Mid-stream provider failover", gateway: false, compressor: false, legion: true },
+  { capability: "Async job engine underneath", gateway: false, compressor: false, legion: true },
+  { capability: "Per-request audit ledger", gateway: false, compressor: false, legion: true },
+  { capability: "Huge community", gateway: true, compressor: true, legion: false },
+];
 ---
 
-<section id="comparison" class="py-20 md:py-32">
+<section id="comparison" class="py-14 md:py-20">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeading
-      label="Compare"
-      title="Compare"
-      subtitle="Most agent frameworks wrap an LLM in a loop. LegionIO models cognition — perception, reasoning, memory, emotion, and action — as distinct, composable systems."
+      label="Where It Sits"
+      title="Where It Sits"
+      subtitle="LLM gateways route but don't curate. Context compressors curate but don't route. LegionIO does both in one drop-in proxy — and it's young and Ruby, which you should weigh honestly too."
     />
 
-    <div class="rounded-2xl overflow-hidden glass-card glow-border" data-reveal style={glassCardStyle}>
+    <div class="rounded-2xl overflow-hidden glass-card glow-border" data-reveal style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
       <!-- Header -->
-      <div class="grid grid-cols-2 border-b border-white/5">
-        <div class="px-6 py-4 text-sm font-mono font-semibold text-surface-500 uppercase tracking-wider">
-          Prompt Wrappers
+      <div class="grid grid-cols-4 border-b border-white/5">
+        <div class="px-4 py-4 text-xs md:text-sm font-mono font-semibold text-surface-500 uppercase tracking-wider">
+          Capability
         </div>
-        <div class="px-6 py-4 text-sm font-mono font-semibold text-violet-primary uppercase tracking-wider border-l border-white/5">
+        <div class="px-2 py-4 text-xs md:text-sm font-mono font-semibold text-surface-500 uppercase tracking-wider text-center border-l border-white/5">
+          LLM Gateways
+        </div>
+        <div class="px-2 py-4 text-xs md:text-sm font-mono font-semibold text-surface-500 uppercase tracking-wider text-center border-l border-white/5">
+          Compressors
+        </div>
+        <div class="px-2 py-4 text-xs md:text-sm font-mono font-semibold text-violet-primary uppercase tracking-wider text-center border-l border-white/5">
           LegionIO
         </div>
       </div>
@@ -53,23 +42,23 @@ const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: bl
       <!-- Rows -->
       {rows.map((row, i) => (
         <div class:list={[
-          "grid grid-cols-2",
+          "grid grid-cols-4",
           i < rows.length - 1 && "border-b border-white/5",
         ]}>
-          <div class="px-6 py-4 text-surface-500 text-sm md:text-base flex items-center">
-            <svg class="w-4 h-4 mr-3 text-surface-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18" /><path d="m6 6 12 12" />
-            </svg>
-            {row.them}
+          <div class="px-4 py-4 text-surface-300 text-sm md:text-base flex items-center">
+            {row.capability}
           </div>
-          <div class="px-6 py-4 text-surface-200 text-sm md:text-base border-l border-white/5 flex items-center">
-            <svg class="w-4 h-4 mr-3 text-violet-primary shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            {row.us}
-          </div>
+          <div class="px-2 py-4 border-l border-white/5 flex items-center justify-center" set:html={row.gateway ? check : cross} />
+          <div class="px-2 py-4 border-l border-white/5 flex items-center justify-center" set:html={row.compressor ? check : cross} />
+          <div class="px-2 py-4 border-l border-white/5 flex items-center justify-center" set:html={row.legion ? check : cross} />
         </div>
       ))}
     </div>
+
+    <p class="text-center text-sm text-surface-500 mt-6" data-reveal>
+      The last row is real. If routing or compression alone solves your problem, a
+      bigger-community single-purpose tool may serve you better. LegionIO is for
+      running both, together, under one audit trail.
+    </p>
   </div>
 </section>
