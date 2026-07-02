@@ -21,7 +21,7 @@ const byCategory = categoryOrder
   .filter((c) => c.gems.length > 0);
 ---
 
-<section id="catalog" class="py-20 md:py-32">
+<section id="catalog" class="py-14 md:py-20">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeading
       label="Capability Catalog"
@@ -64,9 +64,11 @@ const byCategory = categoryOrder
                     <span class="font-mono text-sm text-surface-100">{g.gem}</span>
                     <span class="hidden md:inline text-sm text-surface-500 truncate">{g.summary}</span>
                   </div>
-                  <span class="shrink-0 text-xs font-mono text-surface-500">
-                    {g.runner_count} runners · {g.function_count} functions
-                  </span>
+                  {g.function_count > 0 && (
+                    <span class="shrink-0 text-xs font-mono text-surface-500">
+                      {g.runner_count} runners · {g.function_count} functions
+                    </span>
+                  )}
                 </summary>
                 <div class="px-5 pb-4 pt-1 border-t border-white/5">
                   {g.summary && <p class="md:hidden text-sm text-surface-500 mb-3">{g.summary}</p>}

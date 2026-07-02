@@ -6,7 +6,7 @@ const components = [
   {
     name: "Router",
     role: "legion-llm",
-    description: "Five tiers — local(0), direct(1), fleet(2), cloud(3), frontier(4). Requests try the cheapest capable tier first and escalate on failure or capability mismatch. Circuit breakers per provider instance; a provider dying mid-stream fails over and the stream continues.",
+    description: "Five tiers — local(0), direct(1), fleet(2), cloud(3), frontier(4). Each request starts at the most cost-effective capable tier and escalates on failure or capability mismatch. Circuit breakers per provider instance; a provider dying mid-stream fails over and the stream continues.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
   },
   {
@@ -37,7 +37,7 @@ const curatorStrategies = [
 ];
 ---
 
-<section id="architecture" class="py-20 md:py-32">
+<section id="architecture" class="py-14 md:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeading
       label="Architecture"
@@ -63,7 +63,8 @@ const curatorStrategies = [
         Routing Tiers
       </h3>
       <p class="text-center text-sm text-surface-500 mb-6">
-        Cheapest capable tier first; escalation only when needed. Defined in
+        Each request starts at the most cost-effective tier able to serve it, escalating
+        only when needed. Defined in
         <a href="https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/router.rb" class="text-violet-primary hover:text-lavender underline underline-offset-2">router.rb</a>.
       </p>
       <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">

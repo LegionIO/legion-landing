@@ -5,7 +5,7 @@ import GlowCard from "./ui/GlowCard.astro";
 const features = [
   {
     title: "Tiered Model Routing",
-    description: "Every model is classified into a tier: local, direct, fleet, cloud, frontier. Requests try the cheapest capable tier first and escalate on failure or capability mismatch, per request, automatically.",
+    description: "Every model is classified into a tier: local, direct, fleet, cloud, frontier. Each request starts at the most cost-effective tier that can handle it and escalates automatically on failure or capability mismatch.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
   },
   {
@@ -46,7 +46,7 @@ const features = [
 ];
 ---
 
-<section id="features" class="py-20 md:py-32">
+<section id="features" class="py-14 md:py-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeading
       label="Features"

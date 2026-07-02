@@ -12,7 +12,7 @@ const stats = [
 const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
 ---
 
-<section class="hero-section relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+<section class="hero-section relative pt-28 pb-14 md:pt-36 md:pb-20 overflow-hidden">
   <!-- Background effects -->
   <div class="hero-visuals absolute inset-0 overflow-hidden">
     <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
@@ -27,18 +27,17 @@ const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: bl
     </div>
 
     <!-- Headline -->
-    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-[1.1] mb-6 animate-fade-up">
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-heading font-bold leading-[1.1] mb-6 animate-fade-up">
       <span class="text-gradient-violet">LLM Routing &amp; Context Curation</span>
-      <br />
-      <span class="text-surface-100">in One Open-Source Proxy</span>
     </h1>
 
     <!-- Subtitle -->
     <p class="text-lg md:text-xl text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up" style="animation-delay: 100ms">
-      LegionIO sits between your AI clients and any model backend. Requests route to the
-      cheapest capable tier and escalate when they need more; long agent sessions stay
-      bounded instead of ballooning. Underneath: a distributed Ruby job engine that runs
-      with zero infrastructure in lite mode.
+      LegionIO sits between your AI clients and any model backend, routing each request
+      to the most cost-effective model that can handle it and escalating automatically
+      when a task demands more. Long agent sessions stay bounded instead of ballooning.
+      Underneath: a distributed Ruby job engine that runs with zero infrastructure in
+      lite mode.
     </p>
 
     <!-- Install commands -->
