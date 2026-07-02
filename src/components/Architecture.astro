@@ -4,41 +4,36 @@ import GlowCard from "./ui/GlowCard.astro";
 
 const components = [
   {
-    name: "GAIA",
-    role: "Cognitive Coordinator",
-    description: "Orchestrates the 20-phase cognitive cycle (13 tick + 7 dream), routes messages between cognitive modules, and manages channel abstraction across interfaces.",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`,
-  },
-  {
-    name: "Synapse",
-    role: "Cognitive Router",
-    description: "Three-layer routing — lex-tasker for task execution, lex-synapse for confidence-scored routing, and GAIA/Apollo for knowledge management and dream replay.",
+    name: "Router",
+    role: "legion-llm",
+    description: "Five tiers — local(0), direct(1), fleet(2), cloud(3), frontier(4). Requests try the cheapest capable tier first and escalate on failure or capability mismatch. Circuit breakers per provider instance; a provider dying mid-stream fails over and the stream continues.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
   },
   {
-    name: "Apollo",
-    role: "Knowledge Store",
-    description: "Shared knowledge store backed by PostgreSQL with pgvector — semantic retrieval, confidence decay, and cross-agent knowledge sharing via RabbitMQ.",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
-  },
-  {
-    name: "LLM Pipeline",
-    role: "Governance Engine",
-    description: "19-step pipeline for every LLM call — RBAC, PII/PHI classification, RAG context, budget guards, tool dispatch, confidence scoring, and full audit trail.",
+    name: "Curator",
+    role: "legion-llm",
+    description: "Runs after each turn, off the request path. Six deterministic strategies shrink accumulated history — stale reasoning stripped, tool results distilled, resolved exchanges folded, superseded reads evicted, near-duplicates removed, overflow archived to the knowledge store.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8Z"/></svg>`,
   },
+  {
+    name: "Job Engine",
+    role: "legionio",
+    description: "The original core: task chains with conditions and transformations, eight actor types, distributed cron scheduling, and a disk spool that rides out broker outages. RabbitMQ-backed in full mode, in-process in lite mode.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`,
+  },
+  {
+    name: "GAIA + Apollo",
+    role: "legion-gaia / legion-apollo",
+    description: "The knowledge side: Apollo stores what your deployment learns (pgvector-backed semantic retrieval with confidence decay), GAIA schedules the background work that maintains it and feeds RAG context back into the LLM layer.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
+  },
 ];
 
-const tickPhases = [
-  "Sensory Processing", "Emotional Evaluation", "Memory Retrieval", "Knowledge Retrieval",
-  "Identity Entropy Check", "Working Memory Integration", "Procedural Check", "Prediction Engine",
-  "Mesh Interface", "Social Cognition", "Theory of Mind", "Gut Instinct",
-  "Action Selection", "Memory Consolidation", "Homeostasis Regulation", "Post-Tick Reflection",
-];
+const tiers = ["local", "direct", "fleet", "cloud", "frontier"];
 
-const dreamPhases = [
-  "Memory Audit", "Association Walk", "Contradiction Resolution", "Agenda Formation",
-  "Consolidation Commit", "Knowledge Promotion", "Dream Reflection", "Dream Narration",
+const curatorStrategies = [
+  "strip_thinking", "distill_tool_result", "fold_resolved_exchanges",
+  "evict_superseded", "dedup_similar", "drop_and_archive",
 ];
 ---
 
@@ -47,7 +42,7 @@ const dreamPhases = [
     <SectionHeading
       label="Architecture"
       title="Architecture"
-      subtitle="A biologically-inspired cognitive loop — not a request-response chain."
+      subtitle="A proxy in front, a job engine underneath, a knowledge layer beside it. Every piece is a separate gem; install only what you use."
     />
 
     <!-- Core Components -->
@@ -62,19 +57,23 @@ const dreamPhases = [
       ))}
     </div>
 
-    <!-- Tick Cycle -->
+    <!-- Routing tiers -->
     <div class="mb-12" data-reveal>
-      <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
-        13-Phase Waking Tick Cycle
+      <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-2">
+        Routing Tiers
       </h3>
+      <p class="text-center text-sm text-surface-500 mb-6">
+        Cheapest capable tier first; escalation only when needed. Defined in
+        <a href="https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/router.rb" class="text-violet-primary hover:text-lavender underline underline-offset-2">router.rb</a>.
+      </p>
       <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
-        {tickPhases.map((phase, i) => (
+        {tiers.map((tier, i) => (
           <div class="flex items-center gap-2">
             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-surface-200 font-medium glass-card glow-border hover:border-violet-primary/25 hover:bg-white/[0.06] transition-all duration-300" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-              <span class="text-xs text-violet-primary/60 font-mono">{i + 1}</span>
-              {phase}
+              <span class="text-xs text-violet-primary/60 font-mono">{i}</span>
+              {tier}
             </span>
-            {i < tickPhases.length - 1 && (
+            {i < tiers.length - 1 && (
               <svg class="w-3 h-3 text-surface-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 18 6-6-6-6" />
               </svg>
@@ -84,29 +83,24 @@ const dreamPhases = [
       </div>
     </div>
 
-    <!-- Dream Cycle -->
+    <!-- Curator strategies -->
     <div data-reveal>
-      <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-6">
-        7-Phase Dream Cycle
+      <h3 class="text-center text-lg font-heading font-semibold text-surface-200 mb-2">
+        Curator Strategies
       </h3>
+      <p class="text-center text-sm text-surface-500 mb-6">
+        Six deterministic passes, each a named method in
+        <a href="https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/context/curator.rb" class="text-violet-primary hover:text-lavender underline underline-offset-2">curator.rb</a>.
+        Measured results, including where they save nothing, in the
+        <a href="https://github.com/LegionIO/legion-llm/blob/main/docs/curation-production-metrics.md" class="text-violet-primary hover:text-lavender underline underline-offset-2">production metrics</a>.
+      </p>
       <div class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
-        {dreamPhases.map((phase, i) => (
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-surface-300 font-medium glass-card glow-border hover:border-violet-primary/25 hover:bg-white/[0.06] transition-all duration-300" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-              <span class="text-xs text-medium-lavender/60 font-mono">{i + 1}</span>
-              {phase}
-            </span>
-            {i < dreamPhases.length - 1 && (
-              <svg class="w-3 h-3 text-surface-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            )}
-          </div>
+        {curatorStrategies.map((strategy) => (
+          <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm text-surface-300 font-mono glass-card glow-border hover:border-violet-primary/25 hover:bg-white/[0.06] transition-all duration-300" style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+          {strategy}
+          </span>
         ))}
       </div>
-      <p class="text-center text-sm text-surface-500 mt-4">
-        Memory consolidation during idle — agents dream to resolve contradictions, promote knowledge, and form new agendas.
-      </p>
     </div>
   </div>
 </section>

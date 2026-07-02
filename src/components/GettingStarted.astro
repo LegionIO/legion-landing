@@ -8,7 +8,7 @@ import CodeBlock from "./ui/CodeBlock.astro";
     <SectionHeading
       label="Get Started"
       title="Get Started"
-      subtitle="Ruby >= 3.4 and RabbitMQ to get started. Add Redis and PostgreSQL when you're ready to scale."
+      subtitle="Ruby 3.4+ and nothing else. Lite mode runs with zero external services; add RabbitMQ, Redis, and PostgreSQL when you're ready to scale out."
     />
 
     <div class="space-y-6" data-reveal-stagger>
@@ -44,7 +44,7 @@ import CodeBlock from "./ui/CodeBlock.astro";
         </div>
         <CodeBlock
           title="terminal"
-          code={`<span class="text-violet-primary">$</span> <span class="text-surface-200">legion</span>                     <span class="text-surface-500"># interactive TTY shell</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legion chat</span>                <span class="text-surface-500"># AI-powered REPL</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legionio start</span>             <span class="text-surface-500"># start the daemon</span>`}
+          code={`<span class="text-violet-primary">$</span> <span class="text-surface-200">LEGION_MODE=lite legionio start</span>  <span class="text-surface-500"># zero infrastructure</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legion chat</span>                <span class="text-surface-500"># AI-powered REPL</span>\n<span class="text-violet-primary">$</span> <span class="text-surface-200">legion</span>                     <span class="text-surface-500"># interactive TTY shell</span>`}
         />
       </div>
     </div>
@@ -57,7 +57,7 @@ import CodeBlock from "./ui/CodeBlock.astro";
           <path d="M12 16v-4"/>
           <path d="M12 8h.01"/>
         </svg>
-        Requires Ruby >= 3.4 and RabbitMQ. Optional: PostgreSQL, MySQL, Redis/Memcached, HashiCorp Vault.
+        Requires Ruby >= 3.4. Nothing else in lite mode. Full mode: RabbitMQ; optional PostgreSQL, MySQL, Redis/Memcached, HashiCorp Vault.
       </p>
     </div>
   </div>

@@ -4,44 +4,44 @@ import GlowCard from "./ui/GlowCard.astro";
 
 const features = [
   {
-    title: "Cognitive Tick Cycle",
-    description: "13-phase processing loop mimicking biological neural patterns — sensory processing, emotional evaluation, memory retrieval, prediction, social cognition, action selection, reflection, and more.",
+    title: "Tiered Model Routing",
+    description: "Every model is classified into a tier: local, direct, fleet, cloud, frontier. Requests try the cheapest capable tier first and escalate on failure or capability mismatch, per request, automatically.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
+  },
+  {
+    title: "Mid-Stream Failover",
+    description: "Per-provider circuit breakers (3 failures in a 300s window trips, 60s cooldown). A provider dying mid-stream fails over to the next candidate and the client stream continues instead of erroring.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="22 2 12 12 16 16"/></svg>`,
   },
   {
-    title: "Dream & Consolidation",
-    description: "7-phase dream cycle for memory consolidation during idle periods. Agents audit memories, resolve contradictions, promote knowledge, and form new agendas autonomously.",
+    title: "Context Curation",
+    description: "Six deterministic strategies shrink conversation history after each turn, asynchronously. Production result: single-turn traffic unchanged, 50+ turn agent sessions reduced 97.7% versus naive resend.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
   },
   {
-    title: "73 Extension Gems",
-    description: "234 cognitive modules across 13 domains — executive, memory, affect, inference, social, self, learning, imagination, and more.",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`,
-  },
-  {
-    title: "19-Step LLM Pipeline",
-    description: "Every LLM call runs through governance — RBAC, PII/PHI classification, RAG injection, budget guards, tool dispatch, confidence scoring, and full audit trail.",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8Z"/></svg>`,
-  },
-  {
-    title: "60 MCP Tools",
-    description: "Full Model Context Protocol server — any AI agent can run tasks, manage extensions, query infrastructure, and coordinate workers through standardized tooling.",
+    title: "Any Client, Any Model",
+    description: "Client dialects are translated at the boundary, so existing tools keep working while requests route anywhere: a frontier API call can land on a local GPU without the client knowing or caring.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg>`,
   },
   {
-    title: "AI Chat CLI",
-    description: "Interactive REPL with 60+ commands, slash commands, at-mentions for agent delegation, persistent memory, and multi-provider LLM routing.",
+    title: "Async Job Engine",
+    description: "Task chains with conditions and transformations, eight actor types, distributed cron scheduling, and a disk spool that buffers through broker outages. Scale by starting more processes.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`,
+  },
+  {
+    title: "Zero-Infra Lite Mode",
+    description: "LEGION_MODE=lite swaps RabbitMQ for in-process pub/sub and Redis for an in-memory cache. Every feature works with nothing external installed. Evaluating the framework takes about five minutes.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>`,
   },
   {
-    title: "Multi-Agent Orchestration",
-    description: "Spawn, delegate, and coordinate across specialized agents. Plan mode for read-only exploration. Swarm workflows for complex multi-step pipelines.",
+    title: "MCP Server",
+    description: "Runs over stdio or streamable HTTP. Tools are discovered at runtime from installed extensions, so the tool list reflects what your deployment can actually do, not a hardcoded catalog.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
   },
   {
-    title: "50+ Integrations",
-    description: "GitHub, Slack, AWS, Docker, Kubernetes, Vault, Terraform, Jenkins, GitLab, Jira, PagerDuty, Grafana, Prometheus, Discord, MQTT, and many more.",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>`,
+    title: "Audit Ledger & RBAC",
+    description: "Every LLM request is recorded to an audit ledger; access control uses Vault-style flat policies. All of it ships in the open-source gems, because there is no paid edition for features to hide in.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8Z"/></svg>`,
   },
 ];
 ---
@@ -51,7 +51,7 @@ const features = [
     <SectionHeading
       label="Features"
       title="Features"
-      subtitle="From cognitive processing to infrastructure orchestration — a complete platform, not a thin wrapper."
+      subtitle="What ships today, described the way the code implements it."
     />
 
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5" data-reveal-stagger>
