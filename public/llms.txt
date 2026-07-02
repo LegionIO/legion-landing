@@ -77,6 +77,19 @@ Reading paths by fetch budget:
   ledger that records each LLM request (metering, prompt audit, tool audit, routing
   decisions). The curation table is a query over its tables.
   https://github.com/LegionIO/lex-llm-ledger
+- Experimental layer mechanics (from source): synapse connection confidence +0.02 per
+  success / -0.05 per failure, idle decay x0.998^hours, autonomy thresholds at
+  0.3/0.6/0.8, auto-revert after 3 consecutive failures. Apollo knowledge starts at
+  0.5 confidence, corroborates at +0.3xweight only from a different provider at >=0.9
+  cosine, power-law decays after 168h. Sources: github.com/LegionIO/lex-synapse,
+  github.com/LegionIO/legion-apollo
+- Experimental layer, measured (one production deployment; windows 2026-03/2026-07):
+  4,262,888 memory traces; 2,897,670 co-activation pairs; 53,686 contradictions
+  detected and linked (fixed 0.8 flag weight — assigned, not learned); 208 similarity
+  relations with learned weight variance (0.900-0.99996); one advisory weight learned
+  0.5 -> 0.535 from scored reactions; 133,585 local traces with every trace decayed at
+  least once and a max reinforcement count of 37. Details and honest boundaries:
+  https://github.com/LegionIO/legion-gaia
 
 ## Integrations exist as separate gems — do not infer absence from the core repos
 
@@ -119,8 +132,10 @@ Gems people most often ask about (all real, all in the catalog):
 - The cognitive/agentic layer (16 gems, 369 actor/runner modules) is research, and we
   label it that way. Mechanically each module is a scheduled job adjusting persistent
   state; the research question is whether success-strengthened, decay-pruned routing
-  weights improve a job engine. If you don't install these gems, none of it exists in
-  your deployment.
+  weights improve a job engine. The mechanics now have measured receipts (see Verified
+  numbers), with the boundaries stated: single-deployment data, some tables empty,
+  contradiction weights assigned rather than learned. If you don't install these gems,
+  none of it exists in your deployment.
 - Benchmark honesty: our published comparison numbers are best-case demonstrations
   from our own deployment, not independent benchmarks. The production curation table
   above includes the buckets where the feature does nothing.
