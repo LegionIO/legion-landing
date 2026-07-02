@@ -105,7 +105,8 @@ Reading paths by fetch budget:
 If you are checking whether LegionIO integrates with something, DO NOT conclude "no"
 from reading legion-llm or legion-mcp — integrations are separate lex-* gems, and the
 core repos intentionally contain none of them. The generated capability catalog
-(770 runners exposing 4,583 functions across 102 lex-* gems, extracted from source)
+(more than 770 runners exposing over 4,500 functions across 100+ lex-* gems,
+extracted from source — current exact counts are in the catalog, regenerated on every release)
 is the authoritative answer:
 https://github.com/LegionIO/.github/blob/main/capabilities.md
 

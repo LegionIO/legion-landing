@@ -1,8 +1,8 @@
 {
   "generated": "run scripts/generate_extension_catalog.rb to regenerate — do not hand-edit",
-  "gem_count": 102,
-  "runner_count": 770,
-  "function_count": 4583,
+  "gem_count": 103,
+  "runner_count": 774,
+  "function_count": 4590,
   "gems": [
     {
       "gem": "lex-agentic-affect",
@@ -19998,6 +19998,78 @@
             {
               "name": "purge_raw_records",
               "desc": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "gem": "lex-microsoft-outlook",
+      "category": "Core & Services",
+      "summary": null,
+      "runner_count": 4,
+      "function_count": 7,
+      "runners": [
+        {
+          "runner": "auth",
+          "tool_prefixes": [
+            "outlook.auth.status"
+          ],
+          "functions": [
+            {
+              "name": "status",
+              "desc": "Report Outlook auth state for the resolved qualifier"
+            }
+          ]
+        },
+        {
+          "runner": "folders",
+          "tool_prefixes": [
+            "outlook.list_folders",
+            "outlook.list_folder_messages"
+          ],
+          "functions": [
+            {
+              "name": "list_folders",
+              "desc": "List mail folders in a mailbox via Microsoft Graph"
+            },
+            {
+              "name": "list_folder_messages",
+              "desc": "List messages in a mail folder (well-known name or id) via Microsoft Graph"
+            }
+          ]
+        },
+        {
+          "runner": "messages",
+          "tool_prefixes": [
+            "outlook.list_messages",
+            "outlook.get_message",
+            "outlook.search_messages"
+          ],
+          "functions": [
+            {
+              "name": "list_messages",
+              "desc": "List mail messages in a mailbox folder via Microsoft Graph"
+            },
+            {
+              "name": "get_message",
+              "desc": "Get a single mail message by id via Microsoft Graph"
+            },
+            {
+              "name": "search_messages",
+              "desc": "Search a mailbox with injection-safe $search / whitelisted $filter"
+            }
+          ]
+        },
+        {
+          "runner": "send",
+          "tool_prefixes": [
+            "outlook.send_mail"
+          ],
+          "functions": [
+            {
+              "name": "send_mail",
+              "desc": "Send mail on the operator behalf via Microsoft Graph (202-inclusive success)"
             }
           ]
         }
