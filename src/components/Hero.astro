@@ -2,11 +2,14 @@
 import Badge from "./ui/Badge.astro";
 import Button from "./ui/Button.astro";
 
+import catalog from "../data/extensions.json";
+import { buckets, tierPriority } from "../data/reference";
+
 const stats = [
-  { value: "97.7%", label: "Context reduction, 50+ turn sessions" },
-  { value: "5", label: "Routing tiers" },
-  { value: "9", label: "Provider adapters" },
-  { value: "51K+", label: "Spec examples" },
+  { value: `${buckets.at(-1)!.reduction}%`, label: "Published reduction, 50+ turns", href: "/docs/evidence/" },
+  { value: String(tierPriority.length), label: "Routing tiers", href: "/docs/reference/router/" },
+  { value: String(catalog.gem_count), label: "Extension gems", href: "/docs/ecosystem/" },
+  { value: catalog.function_count.toLocaleString(), label: "Catalog functions", href: "/docs/ecosystem/" },
 ];
 
 const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);";
@@ -37,7 +40,7 @@ const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: bl
     <p class="text-lg md:text-xl text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up" style="animation-delay: 100ms">
       Everything in LegionIO is an input routed to an output. A schedule fires a Teams
       message. A webhook chains tasks across a worker fleet. An LLM request finds the
-      most cost-effective model that can serve it. A mention of a meeting becomes a
+      configured model that can serve it. A mention of a meeting becomes a
       tool call. All of it on a distributed Ruby job engine that runs with zero
       infrastructure in lite mode.
     </p>
@@ -54,7 +57,7 @@ const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: bl
       </div>
       <div class="flex items-center gap-3">
         <span class="text-violet-primary font-mono text-sm">$</span>
-        <code class="font-mono text-sm text-surface-200">legionio start</code>
+        <code class="font-mono text-sm text-surface-200">LEGION_MODE=lite legionio start</code>
       </div>
     </div>
 
@@ -66,7 +69,7 @@ const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: bl
         </svg>
         View on GitHub
       </Button>
-      <Button href="https://legionio.dev" variant="secondary">
+      <Button href="/docs/" variant="secondary">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/>
         </svg>
@@ -77,10 +80,10 @@ const glassCardStyle = "backdrop-filter: blur(12px); -webkit-backdrop-filter: bl
     <!-- Stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-2xl mx-auto animate-fade-up" style="animation-delay: 400ms">
       {stats.map((stat) => (
-        <div class="text-center">
+        <a href={stat.href} class="text-center">
           <div class="text-2xl md:text-3xl font-heading font-bold text-lavender">{stat.value}</div>
           <div class="text-xs md:text-sm text-surface-500 mt-1 font-medium">{stat.label}</div>
-        </div>
+        </a>
       ))}
     </div>
   </div>

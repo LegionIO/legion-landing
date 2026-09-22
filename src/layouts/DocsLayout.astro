@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import { sections } from '../data/navigation';
+import { sources, type SourceId } from '../data/reference';
+interface Props { title: string; description: string; section?: string; sourceIds?: string[]; headings?: { depth: number; slug: string; text: string }[]; wide?: boolean }
+const { title, description, section = 'Documentation', sourceIds = [], headings = [], wide = false } = Astro.props;
+const docs = (await getCollection('docs')).sort((a,b) => a.data.order - b.data.order);
+const path = Astro.url.pathname.replace(/\/$/, '');
+const index = docs.findIndex((d) => path === `/docs/${d.id}`);
+const next = index >= 0 ? docs[index + 1] : docs[0];
+const previous = index > 0 ? docs[index - 1] : null;
+const refs = sourceIds.map((id) => {
+  const s = sources[id as SourceId];
+  if (!s) throw new Error(`Unknown documentation source: ${id}`);
+  return s;
+});
+---
+<BaseLayout title={`${title} · LegionIO Docs`} description={description}>
+  <Nav />
+  <div class="docs-shell">
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <details class="docs-menu" open>
+        <summary>Documentation <span aria-hidden="true">⌄</span></summary>
+        <nav aria-label="Documentation sections">
+          <a class:list={['docs-overview', { active: path === '/docs' }]} href="/docs/" aria-current={path === '/docs' ? 'page' : undefined}>Overview</a>
+          {sections.map((s) => (
+            <div class="nav-group">
+              <span class="nav-group-label">{s.name}</span>
+              {docs.filter((d) => d.data.section === s.name).map((doc) => (
+                <a href={`/docs/${doc.id}/`} class:list={{ active: path === `/docs/${doc.id}` }} aria-current={path === `/docs/${doc.id}` ? 'page' : undefined}>{doc.data.title}</a>
+              ))}
+            </div>
+          ))}
+          <a class="sidebar-source" href="/llms.txt">For AI readers <span aria-hidden="true">↗</span></a>
+        </nav>
+      </details>
+    </aside>
+    <main id="main-content" class:list={['docs-main', { 'docs-wide': wide }]}>
+      <div class="docs-breadcrumb"><a href="/docs/">Docs</a><span aria-hidden="true">/</span><span>{section}</span></div>
+      <header class="doc-header">
+        <div class="doc-eyebrow">LEGIONIO / {section.toUpperCase()}</div>
+        <h1>{title}</h1>
+        <p>{description}</p>
+      </header>
+      <div class="doc-content"><slot /></div>
+      {refs.length > 0 && <section class="doc-sources" aria-label="Page sources">
+        <h2 id="page-sources">Read the source</h2>
+        <p>These pages describe pinned source snapshots. Follow a reference to inspect the implementation at that revision.</p>
+        <ul>{refs.map((s) => <li><a href={s.url}><span>{s.repo}</span><code>{s.path}</code><span class="source-revision">{s.commit.slice(0, 7)} ↗</span></a></li>)}</ul>
+      </section>}
+      <nav class="doc-pagination" aria-label="Adjacent pages">
+        {previous ? <a href={`/docs/${previous.id}/`}><small>← Previous</small><span>{previous.data.title}</span></a> : <span />}
+        {next && <a href={`/docs/${next.id}/`}><small>Next →</small><span>{next.data.title}</span></a>}
+      </nav>
+      <footer class="doc-footer"><a href="https://github.com/LegionIO/legion-landing">Edit documentation on GitHub ↗</a><span>Apache-2.0 core · MIT extensions</span></footer>
+    </main>
+    {!wide && <aside class="docs-toc" aria-label="On this page">
+      <span class="nav-group-label">On this page</span>
+      <nav>{headings.filter((h) => h.depth === 2).map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}{refs.length > 0 && <a href="#page-sources">Read the source</a>}</nav>
+      <div class="toc-note"><span>Source first.</span><p>Defaults come from code. Counts come from metadata. Measurements keep their caveats.</p><a href="/docs/reference/sources/">Source manifest ↗</a></div>
+    </aside>}
+  </div>
+  <script>
+    // Keep navigation compact on narrow screens, including without JS via native details.
+    const menu = document.querySelector<HTMLDetailsElement>(".docs-menu");
+    const narrow = window.matchMedia("(max-width: 800px)");
+    if (menu) {
+      menu.open = !narrow.matches;
+      narrow.addEventListener("change", (event) => { menu.open = !event.matches; });
+    }
+    // Add progressively enhanced copy controls without changing rendered code.
+    document.querySelectorAll<HTMLPreElement>('.doc-content pre').forEach((pre) => {
+      const button = document.createElement('button');
+      button.className = 'doc-copy'; button.textContent = 'Copy'; button.type = 'button';
+      button.setAttribute('aria-label', 'Copy code');
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pre.querySelector('code')?.textContent || '');
+          button.textContent = 'Copied';
+        } catch { button.textContent = 'Select code to copy'; }
+        setTimeout(() => { button.textContent = 'Copy'; }, 2500);
+      });
+      pre.append(button);
+    });
+  </script>
+</BaseLayout>

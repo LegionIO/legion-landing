@@ -1,0 +1,16 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+import catalog from '../../../data/extensions.json';
+export function getStaticPaths() { return catalog.gems.map((gem) => ({ params: { gem: gem.gem }, props: { gem } })); }
+const { gem } = Astro.props;
+const repo = `https://github.com/LegionIO/${gem.gem}`;
+const headings = gem.runners.map((r, i) => ({ depth: 2, slug: `runner-${i}`, text: r.runner }));
+---
+<DocsLayout title={gem.gem} description={gem.summary || `Generated runner reference for ${gem.gem}.`} section="Ecosystem" sourceIds={['capabilities']} headings={headings}>
+  <a class="back-link" href="/docs/ecosystem/">← All extensions</a>
+  <div class="gem-summary"><span class="catalog-category">{gem.category}</span><p>{gem.runner_count} runners · {gem.function_count} functions</p><a class="doc-button" href={repo}>Open repository ↗</a></div>
+  {gem.category.includes('Experimental') && <aside class="doc-callout"><strong>Experimental</strong><p>This gem belongs to the research layer. Catalog inclusion is evidence of code, not an operational maturity rating.</p></aside>}
+  <p>Names and descriptions below come from generated metadata. Use the repository for argument schemas, configuration, tests, and current changes. Runtime tool availability depends on installation, dependencies, and exposure settings.</p>
+  {gem.runners.length === 0 && <div class="doc-callout"><strong>No runner functions in this snapshot.</strong><p>This gem can provide shared contracts or other behavior without exposing runner functions. Inspect its repository for the implementation.</p></div>}
+  {gem.runners.map((runner, i) => <section class="runner-section"><h2 id={`runner-${i}`}>{runner.runner}</h2>{runner.tool_prefixes.length > 0 && <p class="tool-prefixes">Tool identifiers: {runner.tool_prefixes.map((prefix) => <code>{prefix} </code>)}</p>}<ul class="function-list">{runner.functions.map((f) => <li><code>{f.name}</code>{f.desc && <p>{f.desc}</p>}</li>)}</ul></section>)}
+</DocsLayout>

@@ -1,0 +1,30 @@
+---
+import catalog from '../../data/extensions.json';
+const categories = [...new Set(catalog.gems.map((g) => g.category))].sort();
+---
+<section id="catalog-browser" data-catalog>
+  <div class="catalog-stats"><span><strong>{catalog.gem_count}</strong> gems</span><span><strong>{catalog.runner_count}</strong> runners</span><span><strong>{catalog.function_count.toLocaleString()}</strong> functions</span></div>
+  <div class="catalog-controls"><div><label for="catalog-query">Find a gem, runner, or function</label><input id="catalog-query" type="search" placeholder="Try slack, transcript, or handle_fleet_request" autocomplete="off" /></div><div><label for="catalog-category">Category</label><select id="catalog-category"><option value="">All categories</option>{categories.map((c) => <option>{c}</option>)}</select></div></div>
+  <p class="catalog-count" data-count aria-live="polite">Showing {catalog.gem_count} gems</p>
+  <div class="catalog-grid">{catalog.gems.map((g) => <a class="catalog-card" href={`/docs/ecosystem/${g.gem}/`} data-gem data-category={g.category} data-search={[g.gem, g.summary, ...g.runners.flatMap((r) => [r.runner, ...r.functions.map((f) => f.name)])].join(' ').toLowerCase()}><span class="catalog-category">{g.category}</span><h3>{g.gem}<span aria-hidden="true">↗</span></h3>{g.summary && <p>{g.summary}</p>}<span class="catalog-card-footer">{g.runner_count} runners <span>·</span> {g.function_count} functions</span></a>)}</div>
+  <div class="catalog-empty" data-empty hidden><h3>No matching gems</h3><p>Try a broader term or another category.</p><button type="button" data-reset>Clear filters</button></div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-catalog]').forEach((root) => {
+    const query = root.querySelector<HTMLInputElement>('input')!;
+    const category = root.querySelector<HTMLSelectElement>('select')!;
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-gem]')];
+    const filter = () => {
+      let count = 0;
+      const term = query.value.toLowerCase().trim();
+      cards.forEach((card) => {
+        const matches = (!category.value || card.dataset.category === category.value) && (card.dataset.search || '').includes(term);
+        card.hidden = !matches; if (matches) count++;
+      });
+      root.querySelector('[data-count]')!.textContent = `Showing ${count} of ${cards.length} gems`;
+      root.querySelector<HTMLElement>('[data-empty]')!.hidden = count > 0;
+    };
+    query.addEventListener('input', filter); category.addEventListener('change', filter);
+    root.querySelector('[data-reset]')!.addEventListener('click', () => { query.value = ''; category.value = ''; filter(); query.focus(); });
+  });
+</script>

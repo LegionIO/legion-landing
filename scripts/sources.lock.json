@@ -1,0 +1,152 @@
+[
+  {
+    "repo": "legion-llm",
+    "path": "lib/legion/llm/settings/router.rb",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "router-defaults"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "lib/legion/llm/router.rb",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "router"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "lib/legion/llm/routing/rank.rb",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "ranking"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "lib/legion/llm/routing/outcome.rb",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "outcomes"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "lib/legion/llm/context/curator.rb",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "curator"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "docs/curation-production-metrics.md",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "metrics"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "lib/legion/llm/inference/executor.rb",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "executor"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "legion-llm.gemspec",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "llm-gemspec"
+  },
+  {
+    "repo": "legion-llm",
+    "path": "README.md",
+    "commit": "9689799ae6a9ac760177c4937e39ccca9bd52727",
+    "id": "llm-readme"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "README.md",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "core-readme"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "lib/legion/ingress.rb",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "ingress"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "lib/legion/cli/config_command.rb",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "config-cli"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "lib/legion/cli/config_scaffold.rb",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "scaffold"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "lib/legion/cli/setup_command.rb",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "setup-cli"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "lib/legion/api/default_settings.rb",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "api-defaults"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "legionio.gemspec",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "core-gemspec"
+  },
+  {
+    "repo": "LegionIO",
+    "path": "lib/legion/cli.rb",
+    "commit": "b529cd65cb089d30cb393e9415f150a0f5ac4648",
+    "id": "cli"
+  },
+  {
+    "repo": "legion-settings",
+    "path": "README.md",
+    "commit": "58364fd5051a5157f0af8f5ef0f0cc45c0ed3926",
+    "id": "settings-readme"
+  },
+  {
+    "repo": "legion-settings",
+    "path": "lib/legion/settings/loader.rb",
+    "commit": "58364fd5051a5157f0af8f5ef0f0cc45c0ed3926",
+    "id": "settings-loader"
+  },
+  {
+    "repo": "legion-mcp",
+    "path": "README.md",
+    "commit": "cca4d156d6547285e722efeb83ea49e3b42a6e0a",
+    "id": "mcp-readme"
+  },
+  {
+    "repo": "legion-mcp",
+    "path": "legion-mcp.gemspec",
+    "commit": "cca4d156d6547285e722efeb83ea49e3b42a6e0a",
+    "id": "mcp-gemspec"
+  },
+  {
+    "repo": "legion-mcp",
+    "path": "lib/legion/mcp/function_discovery.rb",
+    "commit": "cca4d156d6547285e722efeb83ea49e3b42a6e0a",
+    "id": "discovery"
+  },
+  {
+    "repo": "lex-llm",
+    "path": "lib/legion/extensions/llm/taxonomies.rb",
+    "commit": "538388b878d7bbe100737dde19ac3467956e4086",
+    "id": "taxonomies"
+  },
+  {
+    "repo": "legion-gaia",
+    "path": "README.md",
+    "commit": "9f4f7637c18a4e08ac4d1514099ddbeafe682c55",
+    "id": "gaia-readme"
+  },
+  {
+    "repo": ".github",
+    "path": "capabilities.md",
+    "commit": "7d24bfacb6136c0e1bf1de1a177ab597ab99a2c2",
+    "id": "capabilities"
+  }
+]

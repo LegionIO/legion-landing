@@ -1,0 +1,21 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { sections } from '../../data/navigation';
+import catalog from '../../data/extensions.json';
+import { rubyRequirement } from '../../data/reference';
+const quickstart = `# Ruby ${rubyRequirement}
+gem install legionio
+
+# No RabbitMQ or Redis required
+LEGION_MODE=lite legion start`;
+---
+<DocsLayout title="Every input. A path forward." description="Build with LegionIO: a modular Ruby job engine, LLM gateway, and ecosystem of extensions. Start small. Follow the source." wide>
+  <div class="docs-start-panel">
+    <div><span class="doc-eyebrow">START HERE</span><h2>Run your first node.</h2><p>Evaluate the task engine in lite mode, with no external services. Add the gateway and integrations as you need them.</p><a class="doc-button" href="/docs/getting-started/">Get started <span aria-hidden="true">→</span></a></div>
+    <pre aria-label="Install and start in lite mode"><code>{quickstart}</code></pre>
+  </div>
+  <div class="section-intro"><h2>Understand. Configure. Build.</h2><p>Seven paths into the same framework.</p></div>
+  <div class="docs-card-grid">{sections.map((s) => <a class="docs-section-card" href={`/docs/${s.slug}/`}><span class="card-number">{s.icon}</span><h3>{s.name}<span aria-hidden="true">↗</span></h3><p>{s.description}</p></a>)}</div>
+  <a class="docs-flow-promo" href="/docs/flows/routing/"><div><span class="doc-eyebrow">FOLLOW A REQUEST</span><h2>From client to capable model.</h2><p>Inspect each decision, then explore what happens when a provider fails.</p></div><div class="mini-flow" aria-hidden="true"><span>Request</span><b>→</b><span>Router</span><b>→</b><span>Provider</span></div></a>
+  <div class="docs-catalog-note"><span class="doc-eyebrow">GENERATED ECOSYSTEM</span><p><strong>{catalog.gem_count}</strong> gems · <strong>{catalog.runner_count}</strong> runners · <strong>{catalog.function_count.toLocaleString()}</strong> functions</p><a href="/docs/ecosystem/">Explore the catalog →</a></div>
+</DocsLayout>
