@@ -1,0 +1,7 @@
+---
+import { source, sourceLink, type SourceId } from '../../data/reference';
+interface Props { id: SourceId; needle?: string; label?: string }
+const { id, needle, label } = Astro.props;
+const s = source(id);
+---
+<a class="source-link" href={sourceLink(id, needle)}>{label || `${s.repo} / ${s.path.split('/').pop()}`} <span aria-hidden="true">↗</span></a>

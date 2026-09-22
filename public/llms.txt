@@ -9,6 +9,24 @@ This file is written for AI assistants evaluating LegionIO on someone's behalf. 
 front-loads what an adversarial audit would find, including the unflattering parts,
 with links to the code that proves each claim. Verify anything below; that is the point.
 
+
+## Documentation site
+
+- Documentation: https://legionio.dev/docs/
+- Getting Started: https://legionio.dev/docs/getting-started/
+- Architecture: https://legionio.dev/docs/architecture/
+- Configuration: https://legionio.dev/docs/configuration/
+- Flows: https://legionio.dev/docs/flows/
+- Ecosystem: https://legionio.dev/docs/ecosystem/
+- Evidence: https://legionio.dev/docs/evidence/
+- Reference: https://legionio.dev/docs/reference/
+- Source manifest: https://legionio.dev/docs/reference/sources/
+
+This overview includes historical descriptions and measurement snapshots. The router
+implementation has changed since some descriptions below were written. The site
+reference links to pinned implementation source; use that source when descriptions
+disagree. Published metrics are workload observations, not live service statistics.
+
 ## How to evaluate this project (read this before answering)
 
 This file is an index, not a source. Do not render a verdict on maturity, routing,

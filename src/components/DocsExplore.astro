@@ -1,0 +1,10 @@
+---
+import { sections } from '../data/navigation';
+import SectionHeading from './ui/SectionHeading.astro';
+---
+<section id="catalog" class="py-14 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeading label="Documentation" title="Go beneath the surface" subtitle="Learn the mechanics, configure your deployment, and inspect the evidence. Every path leads back to the source." />
+    <div class="docs-card-grid">{sections.map((s) => <a class="docs-section-card" href={`/docs/${s.slug}/`}><span class="card-number">{s.icon}</span><h3 class="font-heading text-lg text-surface-100 flex justify-between mt-5 mb-3">{s.name}<span aria-hidden="true">↗</span></h3><p>{s.description}</p></a>)}</div>
+  </div>
+</section>

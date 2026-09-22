@@ -22,3 +22,20 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Generated Ruby artifacts
+Gemfile.lock
+*.gem
+
+# Local Sites runtime
+.sites-runtime/
+
+# This documentation site intentionally versions its docs and build scripts.
+!/scripts/
+!/scripts/**
+!/src/content/docs/
+!/src/content/docs/**
+!/src/components/docs/
+!/src/components/docs/**
+!/src/pages/docs/
+!/src/pages/docs/**

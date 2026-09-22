@@ -1,18 +1,19 @@
 ---
 import SectionHeading from "./ui/SectionHeading.astro";
 import GlowCard from "./ui/GlowCard.astro";
+import { tierPriority, sourceLink, sources } from "../data/reference";
 
 const components = [
   {
     name: "Router",
     role: "legion-llm",
-    description: "Five tiers — local(0), direct(1), fleet(2), cloud(3), frontier(4). Each request starts at the most cost-effective capable tier and escalates on failure or capability mismatch. Circuit breakers per provider instance; a provider dying mid-stream fails over and the stream continues.",
+    description: "A per-request router reads live model inventory, filters candidates against capabilities and policy, and ranks eligible lanes. Retries consume an explicit attempt budget. Follow the decision path in the routing guide.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
   },
   {
     name: "Curator",
     role: "legion-llm",
-    description: "Runs after each turn, off the request path. Six deterministic strategies shrink accumulated history — stale reasoning stripped, tool results distilled, resolved exchanges folded, superseded reads evicted, near-duplicates removed, overflow archived to the knowledge store.",
+    description: "Curates earlier turns asynchronously while preserving recent context. Thinking removal, tool-result distillation, and conditional archival reduce repeated history. Strategies and fallbacks depend on the content and settings.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8Z"/></svg>`,
   },
   {
@@ -24,17 +25,20 @@ const components = [
   {
     name: "GAIA + Apollo",
     role: "legion-gaia / legion-apollo",
-    description: "The knowledge side: Apollo stores what your deployment learns (pgvector-backed semantic retrieval with confidence decay), GAIA schedules the background work that maintains it and feeds RAG context back into the LLM layer.",
+    description: "Optional knowledge and coordination layers. Apollo provides knowledge storage and retrieval; GAIA coordinates background work across agentic extensions. The cognitive layer is explicitly experimental.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>`,
   },
 ];
 
-const tiers = ["local", "direct", "fleet", "cloud", "frontier"];
+const tiers = tierPriority;
 
 const curatorStrategies = [
   "strip_thinking", "distill_tool_result", "fold_resolved_exchanges",
   "evict_superseded", "dedup_similar", "drop_and_archive",
 ];
+for (const strategy of curatorStrategies) {
+  if (!sources.curator.content.includes(`def ${strategy}`)) throw new Error(`Curator strategy missing in source: ${strategy}`);
+}
 ---
 
 <section id="architecture" class="py-14 md:py-20">
@@ -70,9 +74,9 @@ const curatorStrategies = [
         Routing Tiers
       </h3>
       <p class="text-center text-sm text-surface-500 mb-6">
-        Each request starts at the most cost-effective tier able to serve it, escalating
-        only when needed. Defined in
-        <a href="https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/router.rb" class="text-violet-primary hover:text-lavender underline underline-offset-2">router.rb</a>.
+        The configured tier order is extracted from the router defaults. Actual selection
+        also depends on eligibility and ranking. See
+        <a href="/docs/reference/router/" class="text-violet-primary hover:text-lavender underline underline-offset-2">router defaults</a>.
       </p>
       <div class="flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
         {tiers.map((tier, i) => (
@@ -97,10 +101,10 @@ const curatorStrategies = [
         Curator Strategies
       </h3>
       <p class="text-center text-sm text-surface-500 mb-6">
-        Six deterministic passes, each a named method in
-        <a href="https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/context/curator.rb" class="text-violet-primary hover:text-lavender underline underline-offset-2">curator.rb</a>.
+        Conditional strategies implemented as named methods in
+        <a href={sourceLink("curator")} class="text-violet-primary hover:text-lavender underline underline-offset-2">curator.rb</a>.
         Measured results, including where they save nothing, in the
-        <a href="https://github.com/LegionIO/legion-llm/blob/main/docs/curation-production-metrics.md" class="text-violet-primary hover:text-lavender underline underline-offset-2">production metrics</a>.
+        <a href="/docs/evidence/" class="text-violet-primary hover:text-lavender underline underline-offset-2">production metrics</a>.
       </p>
       <div class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
         {curatorStrategies.map((strategy) => (
