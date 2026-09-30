@@ -1,0 +1,5 @@
+# LegionIO welcomes AI crawlers — this site is written to be read by them.
+# Start at /llms.txt: a curated index for AI assistants evaluating the project.
+
+User-agent: *
+Allow: /
