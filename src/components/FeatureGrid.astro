@@ -5,17 +5,17 @@ import GlowCard from "./ui/GlowCard.astro";
 const features = [
   {
     title: "Tiered Model Routing",
-    description: "Every model is classified into a tier: local, direct, fleet, cloud, frontier. Each request starts at the most cost-effective tier that can handle it and escalates automatically on failure or capability mismatch.",
+    description: "Model inventory carries tier and capability information. The router evaluates each request against available lanes, applies policy and context constraints, and selects from eligible candidates.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5"/><path d="M17 12h5"/><path d="m7 7 5 5-5 5"/><path d="m12 7 5 5-5 5"/></svg>`,
   },
   {
-    title: "Mid-Stream Failover",
-    description: "Per-provider circuit breakers (3 failures in a 300s window trips, 60s cooldown). A provider dying mid-stream fails over to the next candidate and the client stream continues instead of erroring.",
+    title: "Bounded Provider Retries",
+    description: "Provider outcomes are classified as success, retryable, or terminal. Retryable failures can select another eligible target while attempts remain. Consumed targets stay excluded from the request.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="22 2 12 12 16 16"/></svg>`,
   },
   {
     title: "Context Curation",
-    description: "Six deterministic strategies shrink conversation history after each turn, asynchronously. Production result: single-turn traffic unchanged, 50+ turn agent sessions reduced 97.7% versus naive resend.",
+    description: "Earlier conversation turns can be curated for later requests. The published evidence shows where payload reductions occur, including short conversations where curation provides no benefit.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
   },
   {
@@ -30,7 +30,7 @@ const features = [
   },
   {
     title: "Zero-Infra Lite Mode",
-    description: "LEGION_MODE=lite swaps RabbitMQ for in-process pub/sub and Redis for an in-memory cache. Every feature works with nothing external installed. Evaluating the framework takes about five minutes.",
+    description: "LEGION_MODE=lite swaps RabbitMQ for in-process pub/sub and Redis for an in-memory cache. Evaluate the job engine without external infrastructure. Inference and service integrations still require their own providers or backends.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>`,
   },
   {
@@ -40,7 +40,7 @@ const features = [
   },
   {
     title: "Audit Ledger & RBAC",
-    description: "lex-llm-ledger records every request: tokens, routing decisions, curation deltas, tool calls. It exists for finance and compliance — and it is how every number on this page was measured. Install it and get the same receipts for your own traffic.",
+    description: "The ledger extension records request usage and audit data. Its published exports underpin the curation measurements. RBAC provides execution policy enforcement when configured in the deployment.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8Z"/></svg>`,
   },
 ];

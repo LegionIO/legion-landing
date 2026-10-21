@@ -6,7 +6,7 @@ import HeroHexGrid from "../components/HeroHexGrid.astro";
 import Comparison from "../components/Comparison.astro";
 import Architecture from "../components/Architecture.astro";
 import FeatureGrid from "../components/FeatureGrid.astro";
-import ExtensionCatalog from "../components/ExtensionCatalog.astro";
+import DocsExplore from "../components/DocsExplore.astro";
 import Extensions from "../components/Extensions.astro";
 import GettingStarted from "../components/GettingStarted.astro";
 import Audience from "../components/Audience.astro";
@@ -16,13 +16,13 @@ import Footer from "../components/Footer.astro";
 
 <BaseLayout>
   <Nav />
-  <main class="landing-main relative overflow-hidden" data-hex-root>
+  <main id="main-content" class="landing-main relative overflow-hidden" data-hex-root>
     <HeroHexGrid />
     <Hero />
     <Architecture />
     <FeatureGrid />
     <Comparison />
-    <ExtensionCatalog />
+    <DocsExplore />
     <Extensions />
     <GettingStarted />
     <Audience />

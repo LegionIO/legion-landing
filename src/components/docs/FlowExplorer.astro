@@ -1,0 +1,57 @@
+---
+import { flows } from '../../data/flows';
+import { sourceLink } from '../../data/reference';
+const { kind } = Astro.props as { kind: string };
+const flow = flows[kind];
+---
+<section class="flow-explorer" data-flow aria-label={flow.title}>
+  <div class="flow-topline"><span class="doc-eyebrow">SOURCE WALKTHROUGH</span><span class="flow-counter" data-counter>01 / {String(flow.steps.length).padStart(2, '0')}</span></div>
+  <h2 id="interactive-flow">{flow.title}</h2>
+  <p class="flow-instruction">Select a step to inspect its behavior. This is an explanatory diagram, not a live trace.</p>
+  <div class="flow-track" aria-label="Flow steps">
+    {flow.steps.map((step, i) => <button type="button" class:list={['flow-node', { selected: i === 0 }]} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`flow-${kind}-${i}`} data-step={i}><span>{String(i + 1).padStart(2, '0')}</span><strong>{step.label}</strong></button>)}
+  </div>
+  <div class="flow-details" aria-live="polite">
+    {flow.steps.map((step, i) => <div id={`flow-${kind}-${i}`} data-panel={i} hidden={i !== 0}><span class="doc-eyebrow">STEP {String(i + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.detail}</p><a class="source-link" href={sourceLink(step.source, step.needle)}>Inspect implementation ↗</a></div>)}
+  </div>
+  {kind === 'routing' && <div class="flow-outcome"><label for="routing-outcome">Explore a provider outcome</label><select id="routing-outcome" data-outcome><option value="success">Success</option><option value="timeout">Timeout, attempts remaining</option><option value="policy">Policy denial</option><option value="exhausted">Attempt budget exhausted</option></select><p data-outcome-text aria-live="polite">Success → return the completed result.</p><a href={sourceLink('outcomes', 'def classify_outcome')}>Outcome classification ↗</a></div>}
+  <div class="flow-controls"><button type="button" data-prev disabled>← Previous step</button><button type="button" data-next>Next step →</button></div>
+  <noscript><style>.flow-explorer [hidden]{display:block!important}.flow-controls,.flow-outcome{display:none}</style><p>All step explanations are shown below the diagram when JavaScript is disabled.</p></noscript>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-flow]').forEach((root) => {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-step]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const previous = root.querySelector<HTMLButtonElement>('[data-prev]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-next]')!;
+    let current = 0;
+    const choose = (index: number) => {
+      current = Math.max(0, Math.min(index, buttons.length - 1));
+      buttons.forEach((button, i) => { button.classList.toggle('selected', i === current); button.setAttribute('aria-pressed', String(i === current)); });
+      panels.forEach((panel, i) => { panel.hidden = i !== current; });
+      previous.disabled = current === 0; next.disabled = current === buttons.length - 1;
+      root.querySelector('[data-counter]')!.textContent = `${String(current + 1).padStart(2, '0')} / ${String(buttons.length).padStart(2, '0')}`;
+    };
+    buttons.forEach((button, i) => {
+      button.addEventListener('click', () => choose(i));
+      button.addEventListener('keydown', (e) => {
+        if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
+        e.preventDefault();
+        choose(e.key === 'Home' ? 0 : e.key === 'End' ? buttons.length - 1 : current + (e.key === 'ArrowRight' ? 1 : -1));
+        buttons[current].focus();
+      });
+    });
+    previous.addEventListener('click', () => choose(current - 1));
+    next.addEventListener('click', () => choose(current + 1));
+    const outcomes: Record<string, string> = {
+      success: 'Success → return the completed result.',
+      timeout: 'Timeout → retry against fresh inventory while attempts remain. The consumed target stays excluded.',
+      policy: 'Policy denial → terminal policy_denied rejection (HTTP 403). This outcome does not trigger another provider attempt.',
+      exhausted: 'No attempts left → attempts_exhausted rejection (HTTP 503). The router does not retry indefinitely.',
+    };
+    root.querySelector<HTMLSelectElement>('[data-outcome]')?.addEventListener('change', (e) => {
+      root.querySelector('[data-outcome-text]')!.textContent = outcomes[(e.target as HTMLSelectElement).value];
+      choose(buttons.length - 1);
+    });
+  });
+</script>

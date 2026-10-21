@@ -1,0 +1,24 @@
+---
+import { buckets, sourceLink } from '../../data/reference';
+---
+<section class="metrics-explorer" data-metrics aria-label="Published curation measurements">
+  <div class="flow-topline"><span class="doc-eyebrow">PUBLISHED WORKLOAD SNAPSHOT</span><a class="source-link" href={sourceLink('metrics')}>Methodology ↗</a></div>
+  <h2 id="curation-measurements">Longer sessions. Less repeated context.</h2>
+  <p>Select a conversation-length bucket. Reduction is relative to modeled full-history resend.</p>
+  <div class="metric-bars" aria-label="Reduction by conversation length">
+    {buckets.map((b, i) => <button type="button" data-bucket={i} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`metric-detail-${i}`} class:list={{ selected: i === 0 }}><span class="bar-value">{b.reduction}%</span><span class="bar-track"><span class:list={['bar-fill', { negative: b.reduction < 0 }]} style={`height:${Math.max(2, Math.abs(b.reduction))}%`}></span></span><span class="bar-label">{b.label}</span></button>)}
+  </div>
+  <p class="chart-axis">Turns in conversation</p>
+  <div class="metric-detail" aria-live="polite">{buckets.map((b, i) => <div id={`metric-detail-${i}`} data-metric-detail={i} hidden={i !== 0}><div class="metric-headline"><strong>{b.reduction}%</strong><span>{b.label} {b.label === '1' ? 'turn' : 'turns'} · {b.reduction < 0 ? 'no measured reduction' : 'reduction vs. naive resend'}</span></div><dl><div><dt>Requests</dt><dd>{b.requests.toLocaleString()}</dd></div><div><dt>Conversations</dt><dd>{b.conversations.toLocaleString()}</dd></div><div><dt>Avg. naive tokens / turn</dt><dd>{b.naive.toLocaleString()}</dd></div><div><dt>Avg. actual tokens / turn</dt><dd>{b.actual.toLocaleString()}</dd></div></dl></div>)}</div>
+  <details class="metric-table"><summary>View all values as a table</summary><div class="table-scroll"><table><thead><tr><th scope="col">Turns</th><th scope="col">Requests</th><th scope="col">Conversations</th><th scope="col">Avg. naive</th><th scope="col">Avg. actual</th><th scope="col">Reduction</th></tr></thead><tbody>{buckets.map((b) => <tr><th scope="row">{b.label}</th><td>{b.requests.toLocaleString()}</td><td>{b.conversations.toLocaleString()}</td><td>{b.naive.toLocaleString()}</td><td>{b.actual.toLocaleString()}</td><td>{b.reduction}%</td></tr>)}</tbody></table></div></details>
+  <p class="measurement-note">One author's deployment · modeled baseline · provider caching off in this window. These values do not predict your workload's savings.</p>
+</section>
+<script>
+  document.querySelectorAll('[data-metrics]').forEach((root) => {
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-bucket]');
+    buttons.forEach((button, index) => button.addEventListener('click', () => {
+      buttons.forEach((b, i) => { b.classList.toggle('selected', i === index); b.setAttribute('aria-pressed', String(i === index)); });
+      root.querySelectorAll<HTMLElement>('[data-metric-detail]').forEach((panel, i) => { panel.hidden = i !== index; });
+    }));
+  });
+</script>

@@ -10,7 +10,12 @@
     "build": "astro build",
     "preview": "astro preview",
     "deploy": "npm run build && wrangler pages deploy dist --project-name=legionio",
-    "astro": "astro"
+    "astro": "astro",
+    "sources:sync": "node scripts/sync-sources.mjs",
+    "sources:check": "node scripts/sync-sources.mjs --check",
+    "test": "node --test scripts/source-parsers.test.mjs",
+    "check": "npm run sources:check && npm test",
+    "check:build": "node scripts/check-build.mjs"
   },
   "dependencies": {
     "astro": "^6.1.10",

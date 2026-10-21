@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import FlowExplorer from '../../components/docs/FlowExplorer.astro';
+import MetricsExplorer from '../../components/docs/MetricsExplorer.astro';
+import CatalogBrowser from '../../components/docs/CatalogBrowser.astro';
+import { defaults, commands, sources, sourceLink, steps } from '../../data/reference';
+export async function getStaticPaths() {
+  return (await getCollection('docs')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { title, description, section, special } = entry.data;
+---
+<DocsLayout title={title} description={description} section={section} sourceIds={entry.data.sources} headings={headings}>
+  {['routing', 'tasks', 'context'].includes(special) && <FlowExplorer kind={special} />}
+  {special === 'metrics' && <MetricsExplorer />}
+  <Content />
+  {special === 'catalog' && <CatalogBrowser />}
+  {special === 'defaults' && <div class="table-scroll"><table class="reference-table"><thead><tr><th scope="col">Setting</th><th scope="col">Default expression</th></tr></thead><tbody>{defaults.map((d) => <tr><th scope="row"><a href={`${sources['router-defaults'].url}#L${d.line}`}><code>{d.name}</code> ↗</a></th><td><code class="source-expression">{d.expression}</code></td></tr>)}</tbody></table></div>}
+  {special === 'cli' && <div class="table-scroll"><table class="reference-table"><thead><tr><th scope="col">Command</th><th scope="col">Declared description</th></tr></thead><tbody>{commands.map((c) => <tr><th scope="row"><a href={`${sources[c.source].url}#L${c.line}`}><code>{c.command}</code> ↗</a></th><td>{c.description}</td></tr>)}</tbody></table></div>}
+  {special === 'sources' && <div class="source-manifest">{Object.values(sources).map((s) => <article><span class="doc-eyebrow">{s.repo}</span><h3><a href={s.url}>{s.path} ↗</a></h3><dl><div><dt>Commit</dt><dd><code>{s.commit}</code></dd></div><div><dt>SHA-256</dt><dd><code>{s.sha256}</code></dd></div></dl></article>)}</div>}
+  {special === 'pipeline' && <div class="pipeline-stages">{[{ name: 'Before dispatch', values: steps.before }, { name: 'Provider', values: ['provider_call'] }, { name: 'After dispatch', values: steps.after }].map((group) => <div><h3>{group.name}</h3><ol>{group.values.map((step) => <li><code>{step}</code></li>)}</ol></div>)}<a href={sourceLink('executor', 'PRE_PROVIDER_STEPS')}>Executor stage declarations ↗</a></div>}
+</DocsLayout>
