@@ -26,6 +26,25 @@ npm run preview      # preview production build locally
 | Output directory | `dist` |
 | Environment variable | `NODE_VERSION=22` |
 
+## AI assistant discovery
+
+`public/llms.txt` is the technical context and source-reference index for AI assistants.
+The homepage advertises its canonical URL, `https://legionio.dev/llms.txt`, through:
+
+- A visible, keyboard-accessible link immediately below the hero introduction, before
+  the install commands and capability catalog. It does not depend on JavaScript.
+- A `rel="describedby"` link in `src/layouts/BaseLayout.astro`.
+- An HTTP `Link` header configured in `public/_headers` for Cloudflare Pages.
+
+Keep these discovery paths intact when updating the page. The relation follows the
+[llms.txt proposal](https://llmstxt.org/#proposal); discovery does not guarantee an
+assistant will fetch the index or follow its references.
+
+To check production headers locally, build and run
+`npx --no-install wrangler pages dev dist --port 8788`; Astro preview does not apply
+Cloudflare's `_headers` rules. Verify the homepage notice survives text extraction
+and `/llms.txt` returns `200` with a `text/plain` content type.
+
 ## Project Structure
 
 ```
